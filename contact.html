@@ -5,12 +5,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Contact — Ory Frazier</title>
 <meta name="description" content="Questions about coaching, or just want to chat about your growth journey? Reach out to Ory Frazier.">
-<link rel="canonical" href="https://oryfrazier.com/contact">
+<link rel="canonical" href="https://www.oryfrazier.com/contact">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Contact — Ory Frazier">
 <meta property="og:description" content="Questions about coaching, or just want to chat about your growth journey? Reach out to Ory Frazier.">
-<meta property="og:url" content="https://oryfrazier.com/contact">
-<meta property="og:image" content="https://oryfrazier.com/assets/img/contact-summit-1500.webp">
+<meta property="og:url" content="https://www.oryfrazier.com/contact">
+<meta property="og:image" content="https://www.oryfrazier.com/assets/img/contact-summit-1500.webp">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="preload" href="/assets/fonts/fredoka-variable-latin.woff2" as="font" type="font/woff2" crossorigin>
@@ -23,8 +23,8 @@
 <header class="site-header">
   <a class="site-title" href="/">Ory Frazier</a>
   <nav class="site-nav" aria-label="Main">
-    <a href="/about.html">About</a>
-    <a href="/contact.html" aria-current="page">Contact</a>
+    <a href="/about">About</a>
+    <a href="/contact" aria-current="page">Contact</a>
   </nav>
 </header>
 
@@ -36,9 +36,8 @@
       <div class="split__body stack">
         <p>If you have questions or just want to chat about your growth journey, don't hesitate to reach out! I’m here to support you every step of the way.</p>
 
-        <!-- TODO: replace YOUR_FORM_ID with your Formspree form ID (see README) -->
-        <form class="form js-form" action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
-          <input type="hidden" name="_subject" value="New message from oryfrazier.com (contact)">
+        <form class="form js-form" action="/api/contact" method="POST">
+          <input type="hidden" name="_source" value="contact">
           <div class="form__gotcha" aria-hidden="true">
             <label for="contact-gotcha">Leave this field empty</label>
             <input id="contact-gotcha" type="text" name="_gotcha" tabindex="-1" autocomplete="off">

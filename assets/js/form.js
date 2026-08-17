@@ -9,29 +9,37 @@
     var status = form.querySelector(".js-form-status");
     var submit = form.querySelector('[type="submit"]');
 
-    // Not configured yet — let the browser do the normal thing.
-    if (form.action.indexOf("YOUR_FORM_ID") !== -1) return;
-
     form.addEventListener("submit", function (event) {
       event.preventDefault();
       status.className = "form__status";
       status.textContent = "Sending…";
       submit.disabled = true;
 
+      // Send urlencoded, not multipart: the serverless runtime parses
+      // application/x-www-form-urlencoded bodies for us, multipart it does not.
       fetch(form.action, {
         method: "POST",
-        body: new FormData(form),
-        headers: { Accept: "application/json" }
+        body: new URLSearchParams(new FormData(form)),
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/x-www-form-urlencoded"
+        }
       })
         .then(function (response) {
-          if (!response.ok) throw new Error("Request failed");
-          form.reset();
-          status.textContent = "Thank you!";
+          return response.json().catch(function () {
+            return {};
+          }).then(function (payload) {
+            if (!response.ok) throw new Error(payload.error || "Request failed");
+            form.reset();
+            status.textContent = "Thank you!";
+          });
         })
-        .catch(function () {
+        .catch(function (error) {
           status.className = "form__status form__status--error";
           status.textContent =
-            "Something went wrong — please email me directly instead.";
+            error.message && error.message !== "Request failed"
+              ? error.message
+              : "Something went wrong — please email me directly instead.";
         })
         .finally(function () {
           submit.disabled = false;

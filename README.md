@@ -1,25 +1,25 @@
 # oryfrazier.com
 
 A hand-coded static rebuild of the Squarespace site at
-[oryfrazier.com](https://oryfrazier.com) — three pages, no build step, no
-framework, no dependencies. Open `index.html` in a browser and it works.
+[oryfrazier.com](https://www.oryfrazier.com) — three pages, no build step, no
+framework, no npm dependencies. Deployed on Vercel.
 
 ```
 .
 ├── index.html            Home  (hero, journey, contact form)
 ├── about.html            About
 ├── contact.html          Contact (form + photo)
+├── thanks.html           Form success page (no-JS fallback lands here)
 ├── 404.html
+├── api/contact.js        Serverless function → Resend
 ├── favicon.svg
 ├── robots.txt / sitemap.xml
-├── assets/
-│   ├── css/style.css     All styles. Design tokens live at the top.
-│   ├── js/form.js        Progressive-enhancement form submit (optional)
-│   ├── fonts/            Self-hosted Fredoka + Nunito (SIL OFL)
-│   └── img/              Photos at 750 / 1500 / 2500px (WebP)
-├── _headers / _redirects Netlify + Cloudflare Pages config
-├── netlify.toml
-└── .github/workflows/deploy-pages.yml   GitHub Pages deploy
+├── vercel.json           Clean URLs, cache headers, redirects
+└── assets/
+    ├── css/style.css     All styles. Design tokens live at the top.
+    ├── js/form.js        Progressive-enhancement form submit
+    ├── fonts/            Self-hosted Fredoka + Nunito (SIL OFL)
+    └── img/              Photos at 750 / 1500 / 2500px (WebP)
 ```
 
 ## Local preview
@@ -29,64 +29,90 @@ python3 -m http.server 8000
 # then open http://localhost:8000
 ```
 
-Opening the files directly (`file://`) mostly works too, but the absolute
-paths (`/assets/...`) need a server, so use the command above.
+That serves the static pages but **not** `api/contact.js`. To exercise the
+contact form locally you need `vercel dev` (which does require the Vercel CLI
+and an npm install — the only thing in this repo that does).
 
-## Before you go live — two things
-
-### 1. Wire up the contact form
-
-Static hosting can't process form submissions, so the two forms post to
-[Formspree](https://formspree.io) (free tier: 50 submissions/month).
-
-1. Create a Formspree account and a new form.
-2. Copy the form ID from the endpoint it gives you
-   (`https://formspree.io/f/**xyzabcd**`).
-3. Replace `YOUR_FORM_ID` in **`index.html`** and **`contact.html`**:
-
-   ```sh
-   grep -rl YOUR_FORM_ID . | xargs sed -i '' 's/YOUR_FORM_ID/xyzabcd/g'
-   ```
-
-Until that's done the forms fall back to a plain browser POST and will fail —
-so do this before launch. `assets/js/form.js` then submits in the background
-and shows "Thank you!" inline, matching the original site's behaviour.
-
-Alternatives, if you'd rather not use Formspree: Netlify Forms (add
-`data-netlify="true"` to each `<form>`, then delete the `action`), Basin, or
-Web3Forms.
-
-### 2. Point the domain
-
-DNS still points at Squarespace. Once the site is deployed somewhere, update
-the A/CNAME records at your registrar, then cancel the Squarespace plan —
-**in that order**, and only after you've confirmed the new site is live.
+Note that `python3 -m http.server` doesn't do clean URLs, so links to `/about`
+404 locally. They work in production because `vercel.json` sets
+`cleanUrls: true`. Browse `/about.html` directly when previewing this way.
 
 ## Deploying
 
-The repo is host-agnostic; configs for all three common options are included.
+Vercel, on the personal `oryfrazier` account — the same one running Medaling
+with Friends. Import the repo from the Vercel dashboard:
 
-**Cloudflare Pages** — connect the repo, framework preset "None", build
-command empty, output directory `/`. `_headers` and `_redirects` are picked up
-automatically.
+- **Framework preset:** Other
+- **Build command:** none
+- **Output directory:** leave as the repo root
 
-**Netlify** — connect the repo. `netlify.toml` handles the rest.
+Everything else comes from `vercel.json`. Pushes to `main` auto-deploy.
 
-**GitHub Pages** — Settings → Pages → Source: "GitHub Actions". The workflow in
-`.github/workflows/deploy-pages.yml` deploys on every push to `main`. Note that
-Pages can't do the `/about` → `/about.html` rewrites, so those clean URLs will
-404 there; use Cloudflare or Netlify if you care about matching the old URLs.
+### Plan
+
+This site is commercial (it sells coaching), and Vercel's Hobby plan is
+restricted to non-commercial personal use. It needs to be on a **Pro** team —
+$20/month for one developer seat, which covers every project on the account,
+MWF included.
+
+### Domain
+
+Set **www.oryfrazier.com as the primary domain** and let the apex redirect to
+it. That matches what Squarespace serves today, so existing search rankings and
+inbound links land on the canonical URL rather than through a redirect. All the
+`<link rel="canonical">` tags and `sitemap.xml` already point at www.
+
+DNS still points at Squarespace. Change the records only after the Vercel
+deployment is confirmed working, and cancel the Squarespace plan only after
+that — in that order.
+
+## The contact form
+
+Both forms POST to `api/contact.js`, which relays the message through
+[Resend](https://resend.com) — the same service MWF uses for transactional
+mail. No third party stores your enquiries, and there's no monthly submission
+cap to worry about.
+
+### Setup
+
+1. **Verify `oryfrazier.com` in Resend** (Domains → Add Domain, then add the
+   DNS records it gives you). MWF's verified domain is
+   `medalingwithfriends.com`; sending coaching enquiries from that domain would
+   look wrong, so this site needs its own.
+
+2. **Add three environment variables** in Vercel → Settings → Environment
+   Variables:
+
+   | Variable | Example |
+   | --- | --- |
+   | `RESEND_API_KEY` | `re_...` |
+   | `EMAIL_FROM` | `Ory Frazier <hello@oryfrazier.com>` |
+   | `CONTACT_TO` | `oryfrazier@gmail.com` |
+
+3. **Redeploy.** Until all three are set the function returns a 500 and logs
+   "Contact form is missing Resend configuration."
+
+Replies go to the sender's address (`reply_to` is set), so you can answer
+straight from your inbox.
+
+### How it behaves
+
+- With JS: submits in the background, shows "Thank you!" inline — same as the
+  Squarespace original.
+- Without JS: a normal POST, then a 303 redirect to `/thanks`.
+- A hidden honeypot field (`_gotcha`) silently swallows naive bot submissions.
+- Fields are length-capped and the email is format-checked server-side.
 
 ## Notes on fidelity
 
 Reproduced from the live Squarespace DOM, CSS variables, and section metadata.
 Content, layout proportions, colours, and image assets are the originals.
 
-**Fonts are the one deliberate substitution.** The original uses Omnes Pro,
-an Adobe Fonts family licensed through Squarespace — it can't legally be
+**Fonts are the one deliberate substitution.** The original uses Omnes Pro, an
+Adobe Fonts family licensed through Squarespace — it can't legally be
 self-hosted without an Adobe plan. This build uses **Fredoka** (headings) and
-**Nunito** (body), both open-licensed and visually close. To go back to the
-real thing: add your Adobe Fonts kit `<link>` to each page's `<head>` and set
+**Nunito** (body), both open-licensed and visually close. To go back to the real
+thing: add your Adobe Fonts kit `<link>` to each page's `<head>` and set
 `--font-heading` / `--font-body` in `assets/css/style.css` to `"omnes-pro"`.
 
 Colours, taken from the Squarespace palette:
@@ -101,12 +127,12 @@ Colours, taken from the Squarespace palette:
 Layout differences worth knowing about: Squarespace's "fluid engine" positions
 every block on a 24-column × N-row grid with absolute row spans. This rebuild
 keeps the same column proportions but lets rows size to their content, so text
-edits reflow sensibly instead of overlapping. Sections stack to one column
-below 768px, with images last — same as the original.
+edits reflow sensibly instead of overlapping. Sections stack to one column below
+768px, with images last — same as the original.
 
 ## Editing
 
-Everything is plain HTML. The header and footer are duplicated across the four
+Everything is plain HTML. The header and footer are duplicated across the five
 pages; if that starts to hurt, the natural next step is a tiny static site
-generator (Eleventy or Astro), but for three pages the duplication is cheaper
+generator (Eleventy or Astro), but for five pages the duplication is cheaper
 than the toolchain.
