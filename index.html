@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ory Frazier</title>
+<meta name="description" content="Ory Frazier Coaching — leadership and life coaching to help you grow personally and professionally.">
+<link rel="canonical" href="https://oryfrazier.com/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Ory Frazier">
+<meta property="og:description" content="Ory Frazier Coaching — leadership and life coaching to help you grow personally and professionally.">
+<meta property="og:url" content="https://oryfrazier.com/">
+<meta property="og:image" content="https://oryfrazier.com/assets/img/hero-mountain-lake-1500.webp">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="preload" href="/assets/fonts/fredoka-variable-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/nunito-variable-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/assets/css/style.css">
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="site-header">
+  <a class="site-title" href="/">Ory Frazier</a>
+  <nav class="site-nav" aria-label="Main">
+    <a href="/about.html">About</a>
+    <a href="/contact.html">Contact</a>
+  </nav>
+</header>
+
+<main id="main">
+
+  <!-- Hero -->
+  <section class="section hero">
+    <div class="hero__bg">
+      <img src="/assets/img/hero-mountain-lake-1500.webp"
+           srcset="/assets/img/hero-mountain-lake-750.webp 750w,
+                   /assets/img/hero-mountain-lake-1500.webp 1500w,
+                   /assets/img/hero-mountain-lake-2500.webp 2500w"
+           sizes="100vw" alt="" width="2500" height="1875" fetchpriority="high">
+    </div>
+    <div class="hero__inner">
+      <h1>Welcome to Ory Frazier Coaching</h1>
+      <p class="hero__lede">Hi there! I'm excited to help you embark on a journey of growth, both personally and professionally. Let’s explore your potential together!</p>
+      <a class="button" href="/about.html">Learn more</a>
+    </div>
+  </section>
+
+  <!-- Journey -->
+  <section class="section">
+    <div class="section__inner split split--image-left">
+      <div class="split__media">
+        <img src="/assets/img/home-journey-1500.webp"
+             srcset="/assets/img/home-journey-750.webp 750w,
+                     /assets/img/home-journey-1500.webp 1500w,
+                     /assets/img/home-journey-2500.webp 2500w"
+             sizes="(max-width: 767px) 88vw, 50vw"
+             alt="Ory Frazier outdoors on a mountain trail" width="2500" height="3333" loading="lazy">
+      </div>
+      <div class="split__body stack">
+        <h2>Welcome to<br>our amazing journey</h2>
+        <p>Howdy! I’m thrilled to share my story with you. As your leadership coach, I would empower you to reach for your dreams, whether in your career or personal life. Let’s explore new heights together!</p>
+        <div><a class="button" href="/about.html">Learn more</a></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact -->
+  <section class="section" id="contact">
+    <div class="section__inner split split--text-form">
+      <div class="split__body stack">
+        <h2>I'd Love to Hear from You!</h2>
+        <p>Are you excited about the possibility of working together? Just share a few details with me, and I’ll reach out to chat soon. I’m eager to connect and support you on your journey!</p>
+      </div>
+      <div class="split__body">
+        <!-- TODO: replace YOUR_FORM_ID with your Formspree form ID (see README) -->
+        <form class="form js-form" action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
+          <input type="hidden" name="_subject" value="New message from oryfrazier.com (home)">
+          <div class="form__gotcha" aria-hidden="true">
+            <label for="home-gotcha">Leave this field empty</label>
+            <input id="home-gotcha" type="text" name="_gotcha" tabindex="-1" autocomplete="off">
+          </div>
+
+          <div class="form__field">
+            <label for="home-name">Name</label>
+            <input id="home-name" type="text" name="name" autocomplete="name" required>
+          </div>
+
+          <div class="form__field">
+            <label for="home-email">Email</label>
+            <input id="home-email" type="email" name="email" autocomplete="email" required>
+          </div>
+
+          <div class="form__field">
+            <label for="home-message">Message</label>
+            <textarea id="home-message" name="message" rows="6" required></textarea>
+          </div>
+
+          <div class="form__actions">
+            <button class="button" type="submit">Send</button>
+          </div>
+
+          <p class="form__status js-form-status" role="status" aria-live="polite"></p>
+        </form>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="site-footer__inner">
+    <a href="https://www.linkedin.com/in/ory-frazier/" target="_blank" rel="noopener">Linkedin</a>
+    <a href="https://www.instagram.com/oryfrazier" target="_blank" rel="noopener">Instagram</a>
+  </div>
+</footer>
+
+<script src="/assets/js/form.js" defer></script>
+</body>
+</html>

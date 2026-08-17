@@ -1,0 +1,4 @@
+# Netlify / Cloudflare Pages: keep the Squarespace URLs (/about, /contact) working
+/home     /            301
+/about    /about.html  200
+/contact  /contact.html 200
