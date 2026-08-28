@@ -11,7 +11,7 @@ framework, no npm dependencies. Deployed on Vercel.
 ├── contact.html          Contact (form + photo)
 ├── thanks.html           Form success page (no-JS fallback lands here)
 ├── 404.html
-├── api/contact.js        Serverless function → Resend
+├── api/contact.mjs        Serverless function → Resend
 ├── favicon.svg
 ├── robots.txt / sitemap.xml
 ├── vercel.json           Clean URLs, cache headers, redirects
@@ -29,7 +29,7 @@ python3 -m http.server 8000
 # then open http://localhost:8000
 ```
 
-That serves the static pages but **not** `api/contact.js`. To exercise the
+That serves the static pages but **not** `api/contact.mjs`. To exercise the
 contact form locally you need `vercel dev` (which does require the Vercel CLI
 and an npm install — the only thing in this repo that does).
 
@@ -68,7 +68,7 @@ that — in that order.
 
 ## The contact form
 
-Both forms POST to `api/contact.js`, which relays the message through
+Both forms POST to `api/contact.mjs`, which relays the message through
 [Resend](https://resend.com) — the same service MWF uses for transactional
 mail. No third party stores your enquiries, and there's no monthly submission
 cap to worry about.
