@@ -7,7 +7,7 @@
  * Required environment variables (Vercel → Settings → Environment Variables):
  *   RESEND_API_KEY   Resend API key
  *   EMAIL_FROM       Sender on a Resend-verified domain, e.g. "Ory Frazier
- *                    <hello@oryfrazier.com>". The domain must be verified in
+ *                    <howdy@oryfrazier.com>". The domain must be verified in
  *                    Resend before anything sends.
  *   CONTACT_TO       Where enquiries land, e.g. "oryfrazier@gmail.com"
  */

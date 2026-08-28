@@ -86,7 +86,7 @@ cap to worry about.
    | Variable | Example |
    | --- | --- |
    | `RESEND_API_KEY` | `re_...` |
-   | `EMAIL_FROM` | `Ory Frazier <hello@oryfrazier.com>` |
+   | `EMAIL_FROM` | `Ory Frazier <howdy@oryfrazier.com>` |
    | `CONTACT_TO` | `oryfrazier@gmail.com` |
 
 3. **Redeploy.** Until all three are set the function returns a 500 and logs
