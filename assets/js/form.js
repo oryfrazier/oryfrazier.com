@@ -11,7 +11,7 @@
 
     form.addEventListener("submit", function (event) {
       event.preventDefault();
-      status.className = "form__status";
+      status.classList.remove("form__status--error");
       status.textContent = "Sending…";
       submit.disabled = true;
 
@@ -35,7 +35,7 @@
           });
         })
         .catch(function (error) {
-          status.className = "form__status form__status--error";
+          status.classList.add("form__status--error");
           status.textContent =
             error.message && error.message !== "Request failed"
               ? error.message
