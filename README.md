@@ -9,8 +9,10 @@ Open items live in [TODO.md](TODO.md).
 
 ```
 .
-├── index.html            Home  (hero, journey, contact form)
-├── about.html            About
+├── index.html            Home  (hero, stats, offer, contact form)
+├── coaching.html         Coaching — the two tracks and how it works
+├── about.html            About  (bio, credential, race record)
+├── projects.html         Projects — Medaling with Friends, IceCycles
 ├── contact.html          Contact (form + photo)
 ├── thanks.html           Form success page (no-JS fallback lands here)
 ├── 404.html
@@ -135,7 +137,19 @@ edits reflow sensibly instead of overlapping. Sections stack to one column below
 
 ## Editing
 
-Everything is plain HTML. The header and footer are duplicated across the five
-pages; if that starts to hurt, the natural next step is a tiny static site
-generator (Eleventy or Astro), but for five pages the duplication is cheaper
-than the toolchain.
+Everything is plain HTML. The header and footer are duplicated across the seven
+pages; that's now the main argument for a static site generator (Eleventy or
+Astro) — seven copies of a nav is about where hand-maintenance starts to cost
+more than the toolchain would.
+
+## Positioning
+
+The site leads on **mindset coaching for endurance athletes**, with leadership
+and career coaching as a second track. That's a deliberate narrowing from the
+original generic "leadership and life coaching", which competed against every
+other Co-Active coach on identical ground.
+
+The differentiators, in order: a verifiable ultrarunning record (five 100-mile
+finishes including Leadville), the Co-Active credential, and being an openly
+queer and non-binary coach in a sport that is overwhelmingly neither. The
+projects are framed as evidence of the community thread, not as portfolio.
