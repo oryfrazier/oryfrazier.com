@@ -32,17 +32,18 @@ Porkbun. Nothing below is blocking — it's what's left.
 
 ## Worth doing soon
 
-- [ ] **Set up analytics.** Squarespace had built-in stats; this site has none,
-      so right now there's no visibility into traffic at all. Options: Vercel
-      Web Analytics (one script, already part of the platform) or Plausible /
-      Fathom if you want something privacy-first and off Vercel. Currently the
-      site makes zero third-party requests — worth preserving that if you can.
+- [ ] **Analytics — deferred by choice (2026-09-04).** Squarespace had built-in
+      stats; this site has none, so there's no visibility into on-site
+      behaviour. Search Console now covers the "how did people find me" half.
+      If you want the rest later: Vercel Web Analytics (one script, already
+      part of the platform) or Plausible / Fathom if you'd rather it be
+      privacy-first and off Vercel. The site currently makes zero third-party
+      requests — worth preserving that if you can.
 
-- [ ] **Google Search Console.** Verify ownership of the domain and submit
-      `sitemap.xml`. The URLs are unchanged from Squarespace (`www`, `/about`,
-      `/contact`), so rankings should carry over — but Search Console is how
-      you'd find out if they didn't. Also worth confirming the old Squarespace
-      verification isn't the only thing holding the property.
+- [ ] **Check Search Console in a week or two.** Confirm all 3 pages show as
+      indexed under Pages, and that Performance is recording impressions. The
+      URLs are unchanged from Squarespace, so rankings should carry — this is
+      how you'd find out if they didn't.
 
 ## Known limitations, fix if they bite
 
@@ -83,3 +84,5 @@ Porkbun. Nothing below is blocking — it's what's left.
 - [x] Email forwarding for `howdy@` and `ory@` → Gmail, both verified
 - [x] Co-Active Practitioner badge on the About page, linked to Credly
 - [x] Turn off Squarespace auto-renew, keep the paid term as rollback
+- [x] Google Search Console: Domain property verified via DNS TXT, sitemap
+      submitted and fetching successfully (2026-09-04)
