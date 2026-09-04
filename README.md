@@ -153,3 +153,22 @@ The differentiators, in order: a verifiable ultrarunning record (five 100-mile
 finishes including Leadville), the Co-Active credential, and being an openly
 queer and non-binary coach in a sport that is overwhelmingly neither. The
 projects are framed as evidence of the community thread, not as portfolio.
+
+## Changing CSS or JS
+
+There's no build step, so filenames aren't fingerprinted. Browsers can hold a
+stale stylesheet after a change.
+
+**When you edit `style.css` or `form.js`, bump the version query in every
+page's `<head>`:**
+
+```sh
+# 2 -> 3, across all pages
+sed -i '' 's|style\.css?v=2|style.css?v=3|; s|form\.js?v=2|form.js?v=3|' *.html
+```
+
+That changes the URL, so browsers fetch the new file immediately instead of
+waiting out their cached copy. `vercel.json` also sets `max-age=0,
+must-revalidate` on these files, which handles it going forward — the version
+query is the belt to that suspenders, and the only thing that helps visitors
+who cached a copy under an older policy.
