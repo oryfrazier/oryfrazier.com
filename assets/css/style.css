@@ -50,13 +50,18 @@
      This is its rendered height: vertical padding + one line of the logo. */
   --header-h: calc(4vw + 2.7rem);
 
-  /* Type scale — fluid, matched to the original at a 1470px viewport */
-  --size-h1: clamp(2.6rem, 7.2vw, 6.6rem);
-  --size-h2: clamp(2rem, 4.9vw, 4.4rem);
-  --size-h3: clamp(1.7rem, 3.7vw, 3.3rem);
-  --size-h4: clamp(1.4rem, 3.05vw, 2.75rem);
-  --size-body: clamp(1.05rem, 1.6vw, 1.45rem);
-  --size-button: clamp(0.9rem, 1.11vw, 1rem);
+  /* Type scale.
+     The Squarespace original ran a 1.3rem (23px) body, which suited three
+     pages of short marketing copy. With real prose on the page that reads
+     oversized, so the whole scale is stepped down. The hero keeps its own
+     larger size below — that dramatic headline is the signature of the
+     original design and worth preserving. */
+  --size-h1: clamp(2.2rem, 5.2vw, 4.6rem);
+  --size-h2: clamp(1.7rem, 3.4vw, 3rem);
+  --size-h3: clamp(1.4rem, 2.6vw, 2.3rem);
+  --size-h4: clamp(1.2rem, 2.1vw, 1.9rem);
+  --size-body: clamp(1rem, 1.32vw, 1.22rem);
+  --size-button: clamp(0.85rem, 1vw, 0.95rem);
 }
 
 /* --- Reset --------------------------------------------------------------- */
@@ -157,7 +162,7 @@ p:last-child {
 
 .site-title {
   font-family: var(--font-heading);
-  font-size: clamp(1.4rem, 2.42vw, 2.2rem);
+  font-size: clamp(1.25rem, 2vw, 1.9rem);
   font-weight: 700;
   line-height: 1.2;
   text-transform: uppercase;
@@ -253,6 +258,7 @@ main > .section:first-child {
 }
 
 .hero h1 {
+  font-size: clamp(2.5rem, 6.4vw, 5.8rem);
   max-width: 80%;
   margin: 0 auto;
 }
@@ -363,7 +369,7 @@ main > .section:first-child {
 }
 
 .lede {
-  font-size: clamp(1.15rem, 1.9vw, 1.7rem);
+  font-size: clamp(1.1rem, 1.5vw, 1.35rem);
   line-height: 1.5;
   color: var(--ink);
 }
@@ -387,7 +393,7 @@ main > .section:first-child {
 
 .stat__figure {
   font-family: var(--font-heading);
-  font-size: clamp(1.9rem, 4vw, 3.4rem);
+  font-size: clamp(1.7rem, 3.2vw, 2.8rem);
   font-weight: 700;
   line-height: 1;
   color: var(--accent);
@@ -417,7 +423,7 @@ main > .section:first-child {
 
 .track h2,
 .project h2 {
-  font-size: clamp(1.5rem, 2.5vw, 2.3rem);
+  font-size: clamp(1.3rem, 2vw, 1.85rem);
   margin-bottom: 0.7em;
 }
 
@@ -488,7 +494,7 @@ main > .section:first-child {
 .race__name {
   grid-column: 1;
   font-family: var(--font-heading);
-  font-size: clamp(1.05rem, 1.6vw, 1.5rem);
+  font-size: clamp(1rem, 1.4vw, 1.3rem);
   font-weight: 700;
   text-transform: uppercase;
   line-height: 1.2;
@@ -507,7 +513,7 @@ main > .section:first-child {
   grid-row: 1 / span 2;
   align-self: center;
   font-family: var(--font-heading);
-  font-size: clamp(1.05rem, 1.7vw, 1.6rem);
+  font-size: clamp(1rem, 1.45vw, 1.35rem);
   font-weight: 700;
   color: var(--accent);
   white-space: nowrap;
@@ -538,7 +544,7 @@ main > .section:first-child {
 
 .credential__name {
   font-family: var(--font-heading);
-  font-size: clamp(1rem, 1.5vw, 1.35rem);
+  font-size: clamp(0.95rem, 1.3vw, 1.2rem);
   font-weight: 700;
   line-height: 1.2;
   text-transform: uppercase;
