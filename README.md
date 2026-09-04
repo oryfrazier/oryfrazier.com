@@ -2,7 +2,10 @@
 
 A hand-coded static rebuild of the Squarespace site at
 [oryfrazier.com](https://www.oryfrazier.com) — three pages, no build step, no
-framework, no npm dependencies. Deployed on Vercel.
+framework, no npm dependencies. Deployed on Vercel, DNS and email forwarding at
+Porkbun.
+
+Open items live in [TODO.md](TODO.md).
 
 ```
 .
@@ -62,9 +65,9 @@ it. That matches what Squarespace serves today, so existing search rankings and
 inbound links land on the canonical URL rather than through a redirect. All the
 `<link rel="canonical">` tags and `sitemap.xml` already point at www.
 
-DNS still points at Squarespace. Change the records only after the Vercel
-deployment is confirmed working, and cancel the Squarespace plan only after
-that — in that order.
+DNS is at Porkbun (same registrar as Medaling with Friends). The zone holds
+the Vercel `A` + `www` CNAME, the three Resend records, and Porkbun's own
+forwarding records for `howdy@` and `ory@`.
 
 ## The contact form
 
