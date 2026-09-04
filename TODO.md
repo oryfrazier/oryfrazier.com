@@ -8,6 +8,19 @@ Porkbun. Nothing below is blocking — it's what's left.
 
 Nothing. Checked the Squarespace account on 2026-09-04 — see below.
 
+## Before promoting the coaching page
+
+- [ ] **Fill in the practical details.** There's a marked TODO in
+      `coaching.html`: session length, format (video / phone / in person),
+      pricing or packages, whether there's a free intro call, and current
+      availability. Deliberately left blank rather than invented. A coaching
+      page with no answer to "what does this cost and how does it work" leaks
+      prospects at the last step.
+
+- [ ] **Submit the new URLs to Search Console** once you're happy with them —
+      `/coaching` and `/projects` are in `sitemap.xml`, but URL Inspection →
+      Request Indexing will get them crawled sooner.
+
 ## Waiting on someone else
 
 - [ ] **Credly badge name.** CTI was asked to change the holder name from
@@ -69,6 +82,8 @@ Nothing. Checked the Squarespace account on 2026-09-04 — see below.
 - [x] Rebuild the DNS zone: Vercel records, Resend records, DMARC
 - [x] Email forwarding for `howdy@` and `ory@` → Gmail, both verified
 - [x] Co-Active Practitioner badge on the About page, linked to Credly
+- [x] Repositioned around endurance-athlete mindset coaching; added Coaching
+      and Projects pages, race record, and the Hard Days podcast (2026-09-04)
 - [x] Turn off Squarespace auto-renew, keep the paid term as rollback
 - [x] Google Search Console: Domain property verified via DNS TXT, sitemap
       submitted and fetching successfully (2026-09-04)
