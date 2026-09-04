@@ -6,21 +6,7 @@ Porkbun. Nothing below is blocking — it's what's left.
 
 ## Time-sensitive
 
-- [ ] **Export anything still living in Squarespace before the plan lapses.**
-      Auto-renew is off, so the site goes dark on its own at the end of the paid
-      term. Past contact-form submissions and any stored contacts exist only in
-      Squarespace and disappear with it. Check for stored form responses,
-      then export or screenshot what matters.
-      Expiry date: `________` (fill this in from the billing panel)
-
-- [ ] **Confirm no other Squarespace subscriptions are auto-renewing.**
-      Acuity Scheduling, resold Google Workspace, anything else on the account
-      renews independently of the website plan.
-
-- [ ] **Ask Squarespace for a refund on the recent renewal.**
-      Policy says no — the 14-day window covers new purchases only, not
-      renewals, and there are no prorated refunds. Worth five minutes on the
-      refund request form anyway as a goodwill ask. Don't count on it.
+Nothing. Checked the Squarespace account on 2026-09-04 — see below.
 
 ## Waiting on someone else
 
@@ -86,3 +72,17 @@ Porkbun. Nothing below is blocking — it's what's left.
 - [x] Turn off Squarespace auto-renew, keep the paid term as rollback
 - [x] Google Search Console: Domain property verified via DNS TXT, sitemap
       submitted and fetching successfully (2026-09-04)
+- [x] Audited the Squarespace account for anything worth exporting (2026-09-04).
+      Nothing was. Details:
+      - The website subscription **expired 2026-08-07**, a month before the
+        migration. Admin is read-only; Pages and site content are locked behind
+        "subscribe to a website plan". Nothing can be exported without paying
+        again — and nothing needs to be, since the rebuild is complete and was
+        verified against the live site.
+      - **Contacts: 3 total**, all from Oct–Nov 2024, none since. Two are
+        obvious SEO spam (`dominatingkeywords`, `websolution9`); the third is
+        ambiguous. 0 subscribers, 0 customers. No genuine enquiries lost.
+      - The refund question is moot — the plan lapsed rather than renewing, so
+        there was no recent charge to refund.
+      - Turning off auto-renew was belt-and-braces on an already-expired plan.
+        There was never a paid term left to use as a rollback.
