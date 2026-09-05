@@ -21,6 +21,17 @@ Nothing. Checked the Squarespace account on 2026-09-04 — see below.
       `/coaching` and `/projects` are in `sitemap.xml`, but URL Inspection →
       Request Indexing will get them crawled sooner.
 
+## Check when you get a chance
+
+- [ ] **Confirm the Kettle Moraine finish photo is cleared for commercial use.**
+      It came from a free finisher download, and those often licence personal
+      use only — posting to Instagram is not the same permission as putting it
+      on a site that sells coaching. Worth a look at the race's photo terms, or
+      an email to the photographer. If it isn't cleared, the fix is a one-line
+      swap: any of the other race photos you own outright, or drop the figure.
+      Same question applies to the Leadville portrait if someone else took it
+      (its metadata says it came off Instagram).
+
 ## Waiting on someone else
 
 - [ ] **Credly badge name.** CTI was asked to change the holder name from
