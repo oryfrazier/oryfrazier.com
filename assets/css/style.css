@@ -64,6 +64,30 @@
   --size-button: clamp(0.85rem, 1vw, 0.95rem);
 }
 
+/* --- All-caps kerning ----------------------------------------------------
+   Fredoka's kern pairs are tuned for mixed-case text and are far too tight
+   for all-caps. Anything followed by V is kerned -150/1000em, and several
+   pairs appear in more than one lookup so the values compound. At weight 700
+   the natural gap between I and V is only 48 units, so -150 puts the glyphs
+   4-8px into each other at heading sizes — visible in "CO-ACTIVE".
+
+   Every element below sets text-transform: uppercase, so none of these pairs
+   apply as the designer intended. Turning kerning off restores the font's
+   natural sidebearings. Body copy is mixed-case and keeps its kerning.
+   ------------------------------------------------------------------------ */
+
+h1, h2, h3, h4,
+.site-title,
+.button,
+.stat__figure,
+.project__meta,
+.race__name,
+.race__time,
+.credential__name,
+.site-footer a {
+  font-kerning: none;
+}
+
 /* --- Reset --------------------------------------------------------------- */
 
 *,
