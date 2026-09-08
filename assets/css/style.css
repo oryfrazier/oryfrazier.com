@@ -539,6 +539,17 @@ main > .section:first-child {
   opacity: 0.75;
 }
 
+.photo figcaption a {
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+
+.photo figcaption a:hover,
+.photo figcaption a:focus-visible {
+  color: var(--accent);
+}
+
 /* Copy beside a portrait-orientation photo — the photo stays modest so a
    low-resolution source is never asked to fill a wide column. */
 .split--text-portrait {

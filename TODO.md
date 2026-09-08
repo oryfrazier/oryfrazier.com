@@ -29,8 +29,10 @@ Nothing. Checked the Squarespace account on 2026-09-04 — see below.
       on a site that sells coaching. Worth a look at the race's photo terms, or
       an email to the photographer. If it isn't cleared, the fix is a one-line
       swap: any of the other race photos you own outright, or drop the figure.
-      Same question applies to the Leadville portrait if someone else took it
-      (its metadata says it came off Instagram).
+
+      The Leadville portrait is **cleared** (2026-09-08) — permission from the
+      photographer, credited on the coaching page to @marine.brichard. The
+      summit ridge photo is Ory's own iPhone shot, so no question there.
 
 ## Waiting on someone else
 
