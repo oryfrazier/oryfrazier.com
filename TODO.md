@@ -21,18 +21,21 @@ Nothing. Checked the Squarespace account on 2026-09-04 — see below.
       `/coaching` and `/projects` are in `sitemap.xml`, but URL Inspection →
       Request Indexing will get them crawled sooner.
 
-## Check when you get a chance
+## Photo rights — settled
 
-- [ ] **Confirm the Kettle Moraine finish photo is cleared for commercial use.**
-      It came from a free finisher download, and those often licence personal
-      use only — posting to Instagram is not the same permission as putting it
-      on a site that sells coaching. Worth a look at the race's photo terms, or
-      an email to the photographer. If it isn't cleared, the fix is a one-line
-      swap: any of the other race photos you own outright, or drop the figure.
+- [x] **Leadville portrait** — permission from the photographer, credited on
+      the coaching page to @marine.brichard (2026-09-08).
+- [x] **Kettle Moraine finish (Jennifer Thorsen)** — removed rather than
+      chased. It came from a free finisher download on a SmugMug sales
+      portfolio, which normally licences personal use only, and this site sells
+      coaching. Replaced with Ory's own summit photo (2026-09-08). Note the
+      file remains in git history even though it no longer ships; if that ever
+      matters it would need a history rewrite.
+- [x] **Summit photos** — Ory's own iPhone shots, no question.
 
-      The Leadville portrait is **cleared** (2026-09-08) — permission from the
-      photographer, credited on the coaching page to @marine.brichard. The
-      summit ridge photo is Ory's own iPhone shot, so no question there.
+The remaining unused race photos in ~/Downloads (`AK2A*` shot on a Canon EOS
+R5m2, `DSC_3993` with the Kettle logo burned in) carry the same licensing
+question. Don't add them without permission.
 
 ## Waiting on someone else
 
