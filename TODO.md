@@ -70,9 +70,10 @@ question. Don't add them without permission.
       the reports, consider tightening to `p=quarantine`. No rush at this
       volume.
 
-- [ ] **Header and footer are duplicated across five pages.** Fine at this
-      size. If the page count grows, move to Eleventy or Astro rather than
-      keeping them in sync by hand.
+- [ ] **Header and footer are duplicated across seven pages.** That's now the
+      main argument for a static site generator (Eleventy or Astro) — seven
+      copies of a nav is roughly where hand-maintenance starts costing more
+      than the toolchain would.
 
 ## Done
 
