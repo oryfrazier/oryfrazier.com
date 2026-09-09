@@ -74,12 +74,6 @@ question. Don't add them without permission.
       size. If the page count grows, move to Eleventy or Astro rather than
       keeping them in sync by hand.
 
-## Housekeeping
-
-- [ ] **Delete the test emails.** Four test submissions were sent during setup
-      (three from the `.vercel.app` URL, one from the live domain). They're
-      from "Claude (test submission)" and similar.
-
 ## Done
 
 - [x] Rebuild all three pages plus 404 and thanks as static HTML/CSS
@@ -93,6 +87,7 @@ question. Don't add them without permission.
 - [x] Repositioned around endurance-athlete mindset coaching; added Coaching
       and Projects pages, race record, and the Hard Days podcast (2026-09-04)
 - [x] Turn off Squarespace auto-renew, keep the paid term as rollback
+- [x] Test emails from setup deleted (2026-09-09)
 - [x] Credly badge reissued by CTI with the correct name; `about.html` points
       at the new badge id (2026-09-09)
 - [x] Google Search Console: Domain property verified via DNS TXT, sitemap
