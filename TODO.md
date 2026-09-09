@@ -37,14 +37,6 @@ The remaining unused race photos in ~/Downloads (`AK2A*` shot on a Canon EOS
 R5m2, `DSC_3993` with the Kettle logo burned in) carry the same licensing
 question. Don't add them without permission.
 
-## Waiting on someone else
-
-- [ ] **Credly badge name.** CTI was asked to change the holder name from
-      "Gregory Frazier" to match the site. If they *edit* the record, the link
-      in `about.html` keeps working and there's nothing to do. If they
-      **reissue** the badge, the badge ID changes and the URL in `about.html`
-      needs updating.
-
 ## Worth doing soon
 
 - [ ] **Analytics — deferred by choice (2026-09-04).** Squarespace had built-in
@@ -101,6 +93,8 @@ question. Don't add them without permission.
 - [x] Repositioned around endurance-athlete mindset coaching; added Coaching
       and Projects pages, race record, and the Hard Days podcast (2026-09-04)
 - [x] Turn off Squarespace auto-renew, keep the paid term as rollback
+- [x] Credly badge reissued by CTI with the correct name; `about.html` points
+      at the new badge id (2026-09-09)
 - [x] Google Search Console: Domain property verified via DNS TXT, sitemap
       submitted and fetching successfully (2026-09-04)
 - [x] Audited the Squarespace account for anything worth exporting (2026-09-04).
