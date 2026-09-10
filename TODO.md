@@ -52,7 +52,36 @@ question. Don't add them without permission.
       URLs are unchanged from Squarespace, so rankings should carry — this is
       how you'd find out if they didn't.
 
+## Contrast — your call, not mine
+
+The audit found four WCAG contrast failures rooted in the brand palette carried
+over from Squarespace. I did NOT change these: `--accent` is your brand colour
+and altering it is a design decision.
+
+- [ ] **White on `--accent` (#7877e6) is 3.76:1**, below the 4.5:1 threshold for
+      normal text. That's the fill of every primary CTA — "How I coach", "Send",
+      "Connect", "Visit the site" — at ~14-15px uppercase, too small for the
+      large-text exemption. The hover state `--accent-dark` (#5e5dd8) passes at
+      5.21:1, so the button is only properly legible while hovered, which is
+      backwards and useless to keyboard users.
+      Cheapest fix: make `--accent-dark` the default button fill and darken the
+      hover further. Keeps the brand hue, no markup changes.
+- [ ] **Ghost button text on the page ground is 3.42:1.**
+- [ ] **`--ink` at 0.75 opacity composites to 4.01:1** (photo captions,
+      credential meta line).
+- [x] Form focus indicators were 1.31:1 — fixed, now an opaque 5.21:1 outline.
+      That one was pure accessibility with no brand implication.
+
 ## Known limitations, fix if they bite
+
+- [ ] **The no-JS failure redirect goes nowhere useful.** On a failure without
+      an `Accept: application/json` header the handler 303s to
+      `/contact?error=<message>`, but nothing on any page reads that parameter.
+      A visitor without JS lands on a blank, reset form with a cryptic query
+      string and their message gone — and one who submitted from the home page
+      is thrown onto a different page entirely. Either wire up a reader (a
+      `:target`-based message works without JS) or drop the param and redirect
+      plain.
 
 - [ ] **The contact form has no rate limiting.** A honeypot field catches naive
       bots, and Resend's free tier caps at 100/day, but a determined spammer
@@ -89,6 +118,13 @@ question. Don't add them without permission.
 - [x] Repositioned around endurance-athlete mindset coaching; added Coaching
       and Projects pages, race record, and the Hard Days podcast (2026-09-04)
 - [x] Turn off Squarespace auto-renew, keep the paid term as rollback
+- [x] Zero-dependency test suite: 83 tests, `node --test`, ~3s, CI on push.
+      Mutation-tested — all six bugs that shipped during the build turn it red
+      (2026-09-09)
+- [x] Fixed the bugs the audit found: contact handler rejecting valid Buffer
+      bodies, collapsed email paragraphs, non-focusable skip target, inert
+      .button--disabled, invisible form focus ring, required pronouns field,
+      truncated coaching og:description (2026-09-09)
 - [x] Test emails from setup deleted (2026-09-09)
 - [x] Credly badge reissued by CTI with the correct name; `about.html` points
       at the new badge id (2026-09-09)
