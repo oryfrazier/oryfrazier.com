@@ -15,9 +15,21 @@ Nothing. Checked the Squarespace account on 2026-09-04 — see below.
       for the three months, free 20-minute intro call, currently open.
       A test now fails if any page ships an unresolved TODO or placeholder.
 
-- [ ] **Request indexing for `/coaching` and `/projects`** now that the page is
-      complete. They're in `sitemap.xml`, but URL Inspection → Request Indexing
-      gets them crawled sooner.
+- [x] **Indexing — not needed** (checked 2026-09-10). Both `/coaching` and
+      `/projects` already show "URL is on Google · Page is indexed", crawled by
+      Googlebot smartphone at 4:33 PM and 4:32 PM the same day — after the last
+      content change to either. Crawl allowed, fetch successful, indexing
+      allowed, and Google's selected canonical matches the declared one on both.
+      Discovery was via `sitemap.xml`, so submitting it did the job on its own.
+
+      The Pages report still reads "3 indexed" because its aggregate data was
+      last built 9/3, before those pages existed. It catches up on its own — URL
+      Inspection is the live view.
+
+      Also confirmed: the 3 "Not found (404)" entries are stale migration
+      artifacts (`/home`, `http://www.`, and the apex), all crawled Aug 16–28
+      during the Squarespace window. All three now 308 to the canonical www URL
+      and Google has already started re-validating.
 
 - [ ] **Revisit the monthly cadence once you have clients.** Three sessions
       over three months is sparse against a market norm of six to nine, and it
