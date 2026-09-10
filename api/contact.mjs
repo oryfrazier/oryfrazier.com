@@ -143,6 +143,16 @@ export default async function handler(req, res) {
       console.error("Resend rejected the message:", response.status, await response.text());
       return fail(502, "The message could not be sent.");
     }
+
+    // Log the id Resend assigns. A 200 here only means Resend ACCEPTED the
+    // message — delivery can still fail afterwards, and without this id there
+    // is no way to find the message in Resend's dashboard to see why.
+    try {
+      const { id } = await response.json();
+      console.log("Resend accepted the message:", id, "->", CONTACT_TO);
+    } catch {
+      console.log("Resend accepted the message (no id in response)");
+    }
   } catch (error) {
     console.error("Resend request failed:", error);
     return fail(502, "The message could not be sent.");

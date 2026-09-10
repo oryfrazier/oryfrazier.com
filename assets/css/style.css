@@ -38,8 +38,17 @@
   --bg: #f4f4f3;          /* lightAccent — page background */
   --ink: #4f4f4f;         /* darkAccent — headings */
   --text: #000;           /* body copy */
-  --accent: #7877e6;      /* buttons / links */
-  --accent-dark: #5e5dd8; /* hover */
+  /* Accent. #7877e6 was the Squarespace original, but white on it is only
+     3.76:1 — below the 4.5:1 AA threshold — and every primary CTA uses it at
+     ~15px uppercase, too small for the large-text exemption. The old hover
+     shade already cleared AA, so it is promoted to the default and the hover
+     goes a step darker. Same hue and saturation; only lightness moves.
+       --accent       white on it 5.20:1 · as text on --bg 4.72:1
+       --accent-dark  white on it 6.93:1 · as text on --bg 6.30:1
+     The original #7877e6 is recorded here rather than kept as a token: it has
+     no compliant use as text or as a text background anywhere on the site. */
+  --accent: #5e5dd8;      /* buttons / links */
+  --accent-dark: #4341dc; /* hover */
   --white: #fff;
 
   /* Layout */
@@ -532,7 +541,7 @@ main > .section:first-child {
   grid-column: 1;
   font-size: clamp(0.85rem, 1.1vw, 1.05rem);
   color: var(--ink);
-  opacity: 0.75;
+  opacity: 0.85;
 }
 
 .race__time {
@@ -563,7 +572,8 @@ main > .section:first-child {
   font-size: clamp(0.8rem, 1vw, 0.95rem);
   line-height: 1.4;
   color: var(--ink);
-  opacity: 0.75;
+  /* see --credential__meta: 0.75 is 4.01:1, under AA; 0.85 is 5.06:1 */
+  opacity: 0.85;
 }
 
 .photo figcaption a {
@@ -619,7 +629,8 @@ main > .section:first-child {
 .credential__meta {
   font-size: clamp(0.85rem, 1.05vw, 1rem);
   color: var(--ink);
-  opacity: 0.75;
+  /* 0.75 composited to 4.01:1 against --bg, under AA. 0.85 gives 5.06:1. */
+  opacity: 0.85;
   max-width: 26ch;
 }
 

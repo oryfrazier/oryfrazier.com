@@ -52,25 +52,20 @@ question. Don't add them without permission.
       URLs are unchanged from Squarespace, so rankings should carry — this is
       how you'd find out if they didn't.
 
-## Contrast — your call, not mine
+## Contrast — fixed
 
-The audit found four WCAG contrast failures rooted in the brand palette carried
-over from Squarespace. I did NOT change these: `--accent` is your brand colour
-and altering it is a design decision.
+- [x] **Accent palette darkened to meet WCAG AA** (2026-09-10). `#7877e6` gave
+      only 3.76:1 with white on it, below the 4.5:1 threshold, on every primary
+      CTA at ~15px uppercase. The old hover shade already cleared AA, so it was
+      promoted to the default and the hover went a step darker. Same hue and
+      saturation — only lightness moved.
+      `--accent #5e5dd8` (5.21:1) · `--accent-dark #4341dc` (6.93:1)
+- [x] **Muted caption and meta text** raised from 0.75 to 0.85 opacity —
+      4.01:1 to 5.06:1.
+- [x] **Form focus indicators** — were 1.31:1, now an opaque outline at 6.93:1.
 
-- [ ] **White on `--accent` (#7877e6) is 3.76:1**, below the 4.5:1 threshold for
-      normal text. That's the fill of every primary CTA — "How I coach", "Send",
-      "Connect", "Visit the site" — at ~14-15px uppercase, too small for the
-      large-text exemption. The hover state `--accent-dark` (#5e5dd8) passes at
-      5.21:1, so the button is only properly legible while hovered, which is
-      backwards and useless to keyboard users.
-      Cheapest fix: make `--accent-dark` the default button fill and darken the
-      hover further. Keeps the brand hue, no markup changes.
-- [ ] **Ghost button text on the page ground is 3.42:1.**
-- [ ] **`--ink` at 0.75 opacity composites to 4.01:1** (photo captions,
-      credential meta line).
-- [x] Form focus indicators were 1.31:1 — fixed, now an opaque 5.21:1 outline.
-      That one was pure accessibility with no brand implication.
+All ten foreground/background pairs on the site now pass AA. Recomputed after
+the change, not assumed.
 
 ## Known limitations, fix if they bite
 
