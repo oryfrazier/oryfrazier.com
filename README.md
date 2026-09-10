@@ -111,6 +111,37 @@ straight from your inbox.
 - A hidden honeypot field (`_gotcha`) silently swallows naive bot submissions.
 - Fields are length-capped and the email is format-checked server-side.
 
+## The /links page
+
+`/links` replaced a Linktree at `linktr.ee/oryfrazier`, on 2026-09-10. The
+Linktree had taken **82 views in 365 days** and carried two links — the site
+and Instagram — while the coaching offer, the podcast and both projects were
+not on it at all.
+
+At that volume the hosted hub was not earning what it cost:
+
+- **an extra hop** between a bio-link tap and anything worth reading;
+- **no measurement** that reached this repo, so the only numbers about Ory's
+  own audience lived in someone else's dashboard;
+- **a competing search result** for Ory's own name, on a domain we do not own;
+- **someone else's advertising** on the page — a "get your own Linktree"
+  footer and an Explore drawer promoting unrelated brands to Ory's visitors;
+- **no room to explain a link.** Linktree's free tier gives a title and
+  nothing else, and "IceCycles" alone tells a runner nothing.
+
+So the same idea now lives here: one page, one column of tap targets, a
+subtitle on every one, in the site's own type and colour, measured by the
+mechanisms described below.
+
+**`/links` is deliberately not in the nav.** It is the destination for a bio
+link, a QR code or a talk slide, and duplicates paths the nav already covers.
+It is indexed on its own and listed in `sitemap.xml`, but a visitor who
+arrives at the front door should never be routed through it.
+
+The Linktree itself was cut down to a single button pointing here rather than
+deleted, because old QR codes and forgotten bio links still resolve to it.
+Delete it once those have aged out.
+
 ## Measurement
 
 Two independent things, because they answer different questions and fail in
@@ -132,6 +163,13 @@ Custom events need the Pro plan, which this project is already on.
 line and 302s to the destination. Adding an outbound link means adding a slug to
 `DESTINATIONS` in that file first — a page that links at an undefined slug fails
 `deploy-config.test.mjs` rather than silently redirecting people to the fallback.
+
+**A slug is a public URL, not an internal name.** Instagram's bio links point
+straight at `/go/medaling-with-friends` and `/go/ice-cycles` rather than at the
+two sites, so that traffic is counted too. Renaming a slug therefore breaks a
+link that is live on another platform and cannot be fixed from this repo.
+Unknown slugs land on `/links` instead of a 404, which softens that failure but
+does not undo it — add a new slug, keep the old one.
 
 Why both: the redirect is the authoritative count and works with JavaScript
 disabled, but it is only readable through `vercel logs` or a drain.

@@ -65,6 +65,11 @@ question. Don't add them without permission.
       dashboard (Project → Analytics → Enable). Until then the script 404s and
       only the `/go/` half is recording anything.
 
+- [ ] **Never rename a `/go/` slug.** Instagram's bio links point at
+      `/go/medaling-with-friends` and `/go/ice-cycles` directly, so a rename
+      breaks a live link on a platform this repo cannot reach. Add a slug,
+      keep the old one.
+
 - [ ] **Route the footer and /projects outbound links through `/go/` too.**
       Only the cards on `/links` are counted right now. The footer LinkedIn and
       Instagram links appear on every page and the project pages link out to
