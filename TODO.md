@@ -63,25 +63,11 @@ question. Don't add them without permission.
       privacy-first and off Vercel. The site currently makes zero third-party
       requests — worth preserving that if you can.
 
-- [ ] **Check Search Console in a week or two.** Confirm the indexable pages show
-      as indexed under Pages, and that Performance is recording impressions. The
-      URLs are unchanged from Squarespace, so rankings should carry — this is
-      how you'd find out if they didn't.
-
-## Contrast — fixed
-
-- [x] **Accent palette darkened to meet WCAG AA** (2026-09-10). `#7877e6` gave
-      only 3.76:1 with white on it, below the 4.5:1 threshold, on every primary
-      CTA at ~15px uppercase. The old hover shade already cleared AA, so it was
-      promoted to the default and the hover went a step darker. Same hue and
-      saturation — only lightness moved.
-      `--accent #5e5dd8` (5.21:1) · `--accent-dark #4341dc` (6.93:1)
-- [x] **Muted caption and meta text** raised from 0.75 to 0.85 opacity —
-      4.01:1 to 5.06:1.
-- [x] **Form focus indicators** — were 1.31:1, now an opaque outline at 6.93:1.
-
-All ten foreground/background pairs on the site now pass AA. Recomputed after
-the change, not assumed.
+- [x] **Search Console checked 2026-09-10.** All five indexable pages resolve;
+      `/coaching` and `/projects` confirmed indexed with Google's canonical
+      matching ours. Zero clicks and zero impressions so far, which is expected
+      six days in with no inbound links — that's the growth constraint, not
+      indexing. Worth another look in a month once there's data to read.
 
 ## Known limitations, fix if they bite
 
