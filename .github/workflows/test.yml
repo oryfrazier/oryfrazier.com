@@ -1,0 +1,28 @@
+name: Tests
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          # The cache-bust currency check asks git when style.css last changed
+          # versus when the ?v= token last moved. A shallow clone can't answer,
+          # and the test skips rather than fails — so fetch everything.
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      # No install step: the suite uses only the Node standard library.
+      # If this ever needs `npm ci`, the zero-dependency constraint has broken
+      # and tests/repo-constraints.test.mjs will already be failing.
+      - name: Run tests
+        run: node --test

@@ -23,17 +23,8 @@ function escapeHtml(value) {
     .replace(/"/g, "&quot;");
 }
 
-async function readBody(req) {
-  // Vercel parses JSON and urlencoded bodies for us, but be defensive: a form
-  // POST without JS arrives as urlencoded, fetch() sends FormData or JSON.
-  if (req.body && typeof req.body === "object") return req.body;
-
-  const chunks = [];
-  for await (const chunk of req) chunks.push(chunk);
-  const raw = Buffer.concat(chunks).toString("utf8");
+function parseBody(raw, type) {
   if (!raw) return {};
-
-  const type = req.headers["content-type"] || "";
   if (type.includes("application/json")) {
     try {
       return JSON.parse(raw);
@@ -42,6 +33,26 @@ async function readBody(req) {
     }
   }
   return Object.fromEntries(new URLSearchParams(raw));
+}
+
+async function readBody(req) {
+  // Vercel parses JSON and urlencoded bodies for us, but be defensive: a form
+  // POST without JS arrives as urlencoded, fetch() sends FormData or JSON.
+  // When Vercel does not recognise the content type it hands back the raw
+  // Buffer (or a string) and has already drained the stream, so those have to
+  // be parsed here rather than falling through to the stream path below.
+  const type = req.headers["content-type"] || "";
+  const body = req.body;
+
+  if (typeof body === "string") return parseBody(body, type);
+  if (ArrayBuffer.isView(body)) {
+    return parseBody(Buffer.from(body.buffer, body.byteOffset, body.byteLength).toString("utf8"), type);
+  }
+  if (body && typeof body === "object") return body;
+
+  const chunks = [];
+  for await (const chunk of req) chunks.push(chunk);
+  return parseBody(Buffer.concat(chunks).toString("utf8"), type);
 }
 
 export default async function handler(req, res) {
@@ -101,6 +112,16 @@ export default async function handler(req, res) {
     `— sent from the ${source} at oryfrazier.com`,
   ].filter((line) => line !== null);
 
+  const text = lines.join("\n");
+  // Escape first, then turn breaks into markup, so blank-line-separated
+  // paragraphs in the message survive as separate <p> elements.
+  const html = escapeHtml(text)
+    .replace(/\r\n?/g, "\n")
+    .split(/\n{2,}/)
+    .filter((block) => block.trim() !== "")
+    .map((block) => `<p>${block.replace(/\n/g, "<br>")}</p>`)
+    .join("");
+
   try {
     const response = await fetch("https://api.resend.com/emails", {
       method: "POST",
@@ -113,8 +134,8 @@ export default async function handler(req, res) {
         to: [CONTACT_TO],
         reply_to: data.email,
         subject: `oryfrazier.com — ${data.name}`,
-        text: lines.join("\n"),
-        html: lines.map((line) => `<p>${escapeHtml(line)}</p>`).join(""),
+        text,
+        html,
       }),
     });
 

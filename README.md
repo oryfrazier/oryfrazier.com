@@ -1,8 +1,8 @@
 # oryfrazier.com
 
 A hand-coded static rebuild of the Squarespace site at
-[oryfrazier.com](https://www.oryfrazier.com) — three pages, no build step, no
-framework, no npm dependencies. Deployed on Vercel, DNS and email forwarding at
+[oryfrazier.com](https://www.oryfrazier.com) — no build step, no framework, no npm
+dependencies. Deployed on Vercel, DNS and email forwarding at
 Porkbun.
 
 Open items live in [TODO.md](TODO.md).
@@ -153,6 +153,36 @@ The differentiators, in order: a verifiable ultrarunning record (five 100-mile
 finishes including Leadville), the Co-Active credential, and being an openly
 queer and non-binary coach in a sport that is overwhelmingly neither. The
 projects are framed as evidence of the community thread, not as portfolio.
+
+## Tests
+
+```sh
+node --test
+```
+
+83 tests, no dependencies, about three seconds. The suite uses only `node:test`
+and `node:assert` — installing anything would break the constraint the repo is
+built around, and `tests/repo-constraints.test.mjs` fails if a `package.json`
+with dependencies or a `node_modules` ever appears.
+
+What it covers, and why each part exists:
+
+| File | Guards |
+| --- | --- |
+| `contact-handler.test.mjs` | Every branch of `api/contact.mjs` — body shapes Vercel can deliver, honeypot, validation, content negotiation, HTML escaping, Resend payload shape |
+| `form-contract.test.mjs` | `assets/js/form.js` run for real in a `node:vm` sandbox, plus **seam tests** proving the bytes the form sends are the bytes the handler parses |
+| `pages.test.mjs` | Link and asset integrity, tag balance, nav/footer consistency, headings, labels, alt text, the skip link |
+| `deploy-config.test.mjs` | `vercel.json`, canonical/og agreement, sitemap vs robots, redirect shadowing |
+| `repo-constraints.test.mjs` | Zero-dependency rule, cache-bust token **currency** (via git), doc accuracy |
+| `styles.test.mjs` | Modifier specificity ordering, `font-kerning` coverage, `var()` definitions, brace balance |
+
+Every test in here exists because something actually broke during the build.
+The suite was mutation-tested: each of the six bugs that shipped was
+re-introduced, and each one turns the suite red.
+
+CI runs it on every push via `.github/workflows/test.yml`. Note the
+`fetch-depth: 0` — the cache-bust currency check queries git history and skips
+on a shallow clone.
 
 ## Changing CSS or JS
 

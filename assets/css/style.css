@@ -492,7 +492,10 @@ main > .section:first-child {
   color: var(--white);
 }
 
-.button--disabled {
+/* Same source-order hazard as .button--ghost above: the base .button rule is
+   declared later at equal (0,1,0) specificity and would re-set background and
+   cursor, so this modifier also needs two classes to win. */
+.button.button--disabled {
   background: rgba(79, 79, 79, 0.3);
   cursor: default;
   pointer-events: none;
@@ -694,11 +697,17 @@ main > .section:first-child {
   resize: vertical;
 }
 
+/* Focus indicator (WCAG 2.4.11). The previous rule killed the global focus
+   outline and replaced it with a 25%-alpha accent glow that composites to
+   about 1.31:1 against the white field — invisible in practice, on the only
+   conversion path on the site. An opaque --accent-dark outline clears 3:1
+   against both the white field (about 5.2:1) and the page background
+   (about 4.7:1); the accent border is kept as the softer secondary cue. */
 .form input:focus,
 .form textarea:focus {
-  outline: none;
+  outline: 3px solid var(--accent-dark);
+  outline-offset: 2px;
   border-color: var(--accent);
-  box-shadow: 0 0 0 3px rgba(120, 119, 230, 0.25);
 }
 
 .form__actions {

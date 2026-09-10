@@ -47,8 +47,8 @@ question. Don't add them without permission.
       privacy-first and off Vercel. The site currently makes zero third-party
       requests — worth preserving that if you can.
 
-- [ ] **Check Search Console in a week or two.** Confirm all 3 pages show as
-      indexed under Pages, and that Performance is recording impressions. The
+- [ ] **Check Search Console in a week or two.** Confirm the indexable pages show
+      as indexed under Pages, and that Performance is recording impressions. The
       URLs are unchanged from Squarespace, so rankings should carry — this is
       how you'd find out if they didn't.
 
@@ -77,7 +77,8 @@ question. Don't add them without permission.
 
 ## Done
 
-- [x] Rebuild all three pages plus 404 and thanks as static HTML/CSS
+- [x] Rebuild the original Squarespace pages (home, about, contact) plus 404
+      and thanks as static HTML/CSS
 - [x] Self-host fonts and images; convert images to responsive WebP
 - [x] Contact form via Resend serverless function, tested end to end
 - [x] Deploy to Vercel, upgrade to Pro (commercial use)
