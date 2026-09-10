@@ -49,7 +49,10 @@ export function sizeOf(rel) {
  */
 export function pageFiles() {
   return readdirSync(ROOT)
-    .filter((f) => f.endsWith(".html"))
+    // Dotfiles are local scratch (e.g. a throwaway responsive preview), not
+    // pages of the site. Without this a stray .preview.html in the root fails
+    // every page assertion at once.
+    .filter((f) => f.endsWith(".html") && !f.startsWith("."))
     .sort();
 }
 

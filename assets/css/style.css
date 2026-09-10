@@ -597,35 +597,43 @@ main > .section:first-child {
 
 /* --- Details list (coaching specifics) ----------------------------------- */
 
+/* Term and value are separate grid items, so the row rhythm has to be applied
+   to BOTH or they drift apart: padding on the value alone pushed each label
+   below its own value, and a border on the value alone made the rules start at
+   the second column instead of spanning the row. */
 .details {
   display: grid;
   grid-template-columns: minmax(0, 10rem) minmax(0, 1fr);
-  gap: 0.5rem clamp(1rem, 2.5vw, 2.5rem);
   margin: clamp(1.5rem, 2.5vw, 2.5rem) 0 0;
-  padding-top: clamp(1rem, 2vw, 1.5rem);
   border-top: 1px solid rgba(79, 79, 79, 0.2);
+}
+
+.details dt,
+.details dd {
+  padding-top: clamp(0.7rem, 1.2vw, 1rem);
+  padding-bottom: clamp(0.7rem, 1.2vw, 1rem);
+  border-bottom: 1px solid rgba(79, 79, 79, 0.12);
 }
 
 .details dt {
   font-family: var(--font-heading);
   font-size: clamp(0.9rem, 1.15vw, 1.05rem);
   font-weight: 700;
-  line-height: 1.4;
+  line-height: 1.5;
   text-transform: uppercase;
   color: var(--ink);
 }
 
 .details dd {
+  /* column-gap would break the rule into two segments, so the gutter is
+     padding on the value instead. */
   margin: 0;
-  padding-bottom: clamp(0.5rem, 1vw, 0.9rem);
+  padding-left: clamp(1rem, 2.5vw, 2.5rem);
 }
 
-.details dd:not(:last-child) {
-  border-bottom: 1px solid rgba(79, 79, 79, 0.12);
-}
-
-.details dt:not(:first-of-type) {
-  padding-top: clamp(0.5rem, 1vw, 0.9rem);
+.details dt:last-of-type,
+.details dd:last-of-type {
+  border-bottom: 0;
 }
 
 .details strong {
@@ -914,6 +922,23 @@ main > .section:first-child {
   .race__time {
     grid-column: 1;
     grid-row: auto;
+  }
+
+  /* A 10rem label column leaves only ~170px for the value on a phone, which is
+     not enough for the longer entries. Stack instead, and carry the row rule on
+     the value only so each pair still reads as one block. */
+  .details {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .details dt {
+    padding-bottom: 0.15rem;
+    border-bottom: 0;
+  }
+
+  .details dd {
+    padding-top: 0;
+    padding-left: 0;
   }
 }
 
