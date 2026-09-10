@@ -23,6 +23,7 @@ import {
   findElements,
   lineOf,
   pageFiles,
+  pageHtml,
   pagePath,
   read,
   resolveHref,
@@ -456,6 +457,22 @@ test("every form control has a label, and ids are unique per page", () => {
       if (!t.selfClosing) stack.push(t.name);
     }
   }
+});
+
+
+test("no page ships an unresolved TODO or placeholder marker", () => {
+  // The coaching page carried a `TODO (Ory)` comment holding space for session
+  // length, pricing and availability. A half-finished money page is worse than
+  // no page, and an HTML comment is invisible in the browser — so assert it.
+  const offenders = [];
+  for (const page of PAGES) {
+    const html = pageHtml(page);
+    for (const pattern of [/TODO/i, /FIXME/i, /YOUR_FORM_ID/, /Lorem ipsum/i, /\bTBD\b/i, /coming soon/i]) {
+      const hit = html.match(pattern);
+      if (hit) offenders.push(`${page}: ${hit[0]}`);
+    }
+  }
+  assert.deepStrictEqual(offenders, [], `unresolved placeholders shipped:\n  ${offenders.join("\n  ")}`);
 });
 
 test("every img has an alt attribute", () => {

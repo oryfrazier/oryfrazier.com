@@ -8,18 +8,22 @@ Porkbun. Nothing below is blocking — it's what's left.
 
 Nothing. Checked the Squarespace account on 2026-09-04 — see below.
 
-## Before promoting the coaching page
+## Coaching page — shipped
 
-- [ ] **Fill in the practical details.** There's a marked TODO in
-      `coaching.html`: session length, format (video / phone / in person),
-      pricing or packages, whether there's a free intro call, and current
-      availability. Deliberately left blank rather than invented. A coaching
-      page with no answer to "what does this cost and how does it work" leaks
-      prospects at the last step.
+- [x] **Practical details filled in** (2026-09-10): 60-minute sessions by video,
+      once a month, three-month start (three sessions), $200 a session / $600
+      for the three months, free 20-minute intro call, currently open.
+      A test now fails if any page ships an unresolved TODO or placeholder.
 
-- [ ] **Submit the new URLs to Search Console** once you're happy with them —
-      `/coaching` and `/projects` are in `sitemap.xml`, but URL Inspection →
-      Request Indexing will get them crawled sooner.
+- [ ] **Request indexing for `/coaching` and `/projects`** now that the page is
+      complete. They're in `sitemap.xml`, but URL Inspection → Request Indexing
+      gets them crawled sooner.
+
+- [ ] **Revisit the monthly cadence once you have clients.** Three sessions
+      over three months is sparse against a market norm of six to nine, and it
+      caps a client at $600 where biweekly would be $1,200 at the same rate.
+      Deliberate choice as a low-commitment entry offer — worth re-testing once
+      you know whether momentum holds across four-week gaps.
 
 ## Photo rights — settled
 
