@@ -62,10 +62,17 @@ export default async function handler(req, res) {
   }
 
   const wantsJson = (req.headers.accept || "").includes("application/json");
+
+  // Without JS the browser posts natively and we can only answer with a
+  // redirect. Send them back to the form they used, at a fragment the page
+  // reveals with :target — no script needed to show the message. The previous
+  // `?error=` param was read by nothing, so a failed submission silently
+  // dropped the visitor on a blank form with their message gone.
+  let failFragment = "/contact#form-error";
   const fail = (status, message) =>
     wantsJson
       ? res.status(status).json({ error: message })
-      : res.redirect(303, `/contact?error=${encodeURIComponent(message)}`);
+      : res.redirect(303, failFragment);
 
   let body;
   try {
@@ -73,6 +80,8 @@ export default async function handler(req, res) {
   } catch {
     return fail(400, "Could not read the submission.");
   }
+
+  if (body._source === "home") failFragment = "/#form-error";
 
   // Honeypot: real people leave this empty.
   if (body._gotcha) {

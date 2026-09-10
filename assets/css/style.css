@@ -792,6 +792,28 @@ main > .section:first-child {
   display: none;
 }
 
+/* The no-JS failure channel. The handler 303s to #form-error on this page, so
+   :target reveals it with no script involved. Hidden the rest of the time. */
+.form__error {
+  display: none;
+  margin: 0;
+  padding: 0.9rem 1.1rem;
+  border-radius: 8px;
+  background: rgba(179, 38, 30, 0.08);
+  border: 1px solid rgba(179, 38, 30, 0.35);
+  color: #8c1d18;
+  font-size: clamp(0.95rem, 1.2vw, 1.1rem);
+  line-height: 1.5;
+}
+
+.form__error:target {
+  display: block;
+}
+
+.form__error a {
+  color: inherit;
+}
+
 .form__status--error {
   color: #b3261e;
 }

@@ -13,6 +13,7 @@
  * only meaningful without a fresh import per case.
  */
 
+import { readFileSync } from "node:fs";
 import assert from "node:assert/strict";
 import { Readable } from "node:stream";
 import { after, afterEach, before, beforeEach, describe, it } from "node:test";
@@ -261,11 +262,30 @@ describe("content negotiation", () => {
     assert.equal(res.redirectCalls.length, 0);
   });
 
-  it("a no-JS client gets a 303 back to /contact carrying the message", async () => {
-    const res = await call({ accept: null, body: { email: VALID.email, message: VALID.message } });
+  it("a no-JS client is sent back to the form it came from, at a fragment the page can show", async () => {
+    // The point of this branch is that the visitor lands somewhere that tells
+    // them what happened. It previously 303'd to /contact?error=... which no
+    // page read, so the failure was silent and their message was gone.
+    const fromContact = await call({ accept: null, body: { email: VALID.email, message: VALID.message } });
+    assert.deepEqual(fromContact.redirectCalls, [[303, "/contact#form-error"]]);
 
-    assert.deepEqual(res.redirectCalls, [[303, "/contact?error=Name%2C%20email%2C%20and%20message%20are%20required."]]);
-    assert.equal(res.statusCalls.length, 0);
+    const fromHome = await call({
+      accept: null,
+      body: { email: VALID.email, message: VALID.message, _source: "home" },
+    });
+    assert.deepEqual(fromHome.redirectCalls, [[303, "/#form-error"]],
+      "a no-JS visitor who submitted from the home page should not be dumped on a different page");
+
+    // And the target must actually exist, or we are back to a silent failure.
+    for (const [page, url] of [["contact.html", "/contact#form-error"], ["index.html", "/#form-error"]]) {
+      const html = readFileSync(new URL(`../${page}`, import.meta.url), "utf8");
+      const id = url.split("#")[1];
+      assert.match(html, new RegExp(`id="${id}"`),
+        `${page} must contain #${id}; the handler redirects there on failure`);
+    }
+    // a redirect answer must not also set a status code
+    assert.equal(fromContact.statusCalls.length, 0);
+    assert.equal(fromHome.statusCalls.length, 0);
   });
 });
 
