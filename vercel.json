@@ -9,6 +9,12 @@
       "permanent": true
     }
   ],
+  "rewrites": [
+    {
+      "source": "/go/:slug",
+      "destination": "/api/go?slug=:slug"
+    }
+  ],
   "headers": [
     {
       "source": "/assets/(fonts|img)/(.*)",

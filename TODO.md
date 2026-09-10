@@ -55,15 +55,28 @@ question. Don't add them without permission.
 
 ## Worth doing soon
 
-- [ ] **Analytics — deferred by choice (2026-09-04).** Squarespace had built-in
-      stats; this site has none, so there's no visibility into on-site
-      behaviour. Search Console now covers the "how did people find me" half.
-      If you want the rest later: Vercel Web Analytics (one script, already
-      part of the platform) or Plausible / Fathom if you'd rather it be
-      privacy-first and off Vercel. The site currently makes zero third-party
-      requests — worth preserving that if you can.
+- [x] **Analytics — added 2026-09-10.** Vercel Web Analytics for page views
+      (a first-party script, so the zero-third-party-requests property holds),
+      plus a `/go/<slug>` redirect through `api/go.mjs` that counts outbound
+      clicks server-side and works with JavaScript off. See **Measurement** in
+      README.md.
 
-- [x] **Search Console checked 2026-09-10.** All five indexable pages resolve;
+      **Still needs one manual step:** switch on Web Analytics in the Vercel
+      dashboard (Project → Analytics → Enable). Until then the script 404s and
+      only the `/go/` half is recording anything.
+
+- [ ] **Route the footer and /projects outbound links through `/go/` too.**
+      Only the cards on `/links` are counted right now. The footer LinkedIn and
+      Instagram links appear on every page and the project pages link out to
+      MWF, IceCycles and both podcast apps — all invisible until they go
+      through the counter. Add slugs to `DESTINATIONS` first.
+
+- [ ] **Decide where the click log goes.** `vercel logs` keeps 30 days on Pro
+      and has no aggregation, so "which link won last quarter" is currently
+      unanswerable from the server-side half. A log drain, or writing to a
+      store, is the fix if that question starts mattering.
+
+- [x] **Search Console checked 2026-09-10.** Every indexable page resolved;
       `/coaching` and `/projects` confirmed indexed with Google's canonical
       matching ours. Zero clicks and zero impressions so far, which is expected
       six days in with no inbound links — that's the growth constraint, not
@@ -96,8 +109,8 @@ question. Don't add them without permission.
       the reports, consider tightening to `p=quarantine`. No rush at this
       volume.
 
-- [ ] **Header and footer are duplicated across seven pages.** That's now the
-      main argument for a static site generator (Eleventy or Astro) — seven
+- [ ] **Header and footer are duplicated across every page.** That's now the
+      main argument for a static site generator (Eleventy or Astro) — this many
       copies of a nav is roughly where hand-maintenance starts costing more
       than the toolchain would.
 
@@ -115,7 +128,7 @@ question. Don't add them without permission.
 - [x] Repositioned around endurance-athlete mindset coaching; added Coaching
       and Projects pages, race record, and the Hard Days podcast (2026-09-04)
 - [x] Turn off Squarespace auto-renew, keep the paid term as rollback
-- [x] Zero-dependency test suite: 83 tests, `node --test`, ~3s, CI on push.
+- [x] Zero-dependency test suite: 93 tests, `node --test`, ~3s, CI on push.
       Mutation-tested — all six bugs that shipped during the build turn it red
       (2026-09-09)
 - [x] Fixed the bugs the audit found: contact handler rejecting valid Buffer

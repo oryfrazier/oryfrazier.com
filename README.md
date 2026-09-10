@@ -14,15 +14,18 @@ Open items live in [TODO.md](TODO.md).
 ├── about.html            About  (bio, credential, race record)
 ├── projects.html         Projects — Medaling with Friends, IceCycles
 ├── contact.html          Contact (form + photo)
+├── links.html            Link hub — the one URL for a bio link or QR code
 ├── thanks.html           Form success page (no-JS fallback lands here)
 ├── 404.html
 ├── api/contact.mjs        Serverless function → Resend
+├── api/go.mjs             Serverless function → outbound click counter (/go/<slug>)
 ├── favicon.svg
 ├── robots.txt / sitemap.xml
 ├── vercel.json           Clean URLs, cache headers, redirects
 └── assets/
     ├── css/style.css     All styles. Design tokens live at the top.
     ├── js/form.js        Progressive-enhancement form submit
+    ├── js/links.js       Outbound clicks as Analytics events (/links only)
     ├── fonts/            Self-hosted Fredoka + Nunito (SIL OFL)
     └── img/              Photos at 750 / 1500 / 2500px (WebP)
 ```
@@ -108,6 +111,48 @@ straight from your inbox.
 - A hidden honeypot field (`_gotcha`) silently swallows naive bot submissions.
 - Fields are length-capped and the email is format-checked server-side.
 
+## Measurement
+
+Two independent things, because they answer different questions and fail in
+different ways.
+
+**Page views — Vercel Web Analytics.** Two lines before `</body>` on every page:
+a queue stub, then `<script defer src="/_vercel/insights/script.js">`. The
+script is served from this origin, so the site still makes no third-party
+request. The stub has to come first — a `va(...)` call before the real script
+loads throws without it — and `deploy-config.test.mjs` asserts both the exact
+snippet and that ordering on every page.
+
+**It must be switched on in the Vercel dashboard** (Project → Analytics →
+Enable Web Analytics). Until it is, the script 404s and nothing is recorded.
+Custom events need the Pro plan, which this project is already on.
+
+**Outbound clicks — `/go/<slug>`.** Every off-site link on `/links` points at
+`/go/<slug>`; `vercel.json` rewrites that onto `api/go.mjs`, which logs one JSON
+line and 302s to the destination. Adding an outbound link means adding a slug to
+`DESTINATIONS` in that file first — a page that links at an undefined slug fails
+`deploy-config.test.mjs` rather than silently redirecting people to the fallback.
+
+Why both: the redirect is the authoritative count and works with JavaScript
+disabled, but it is only readable through `vercel logs` or a drain.
+`assets/js/links.js` sends the same click to Web Analytics as an `outbound`
+event so it can be read on a dashboard. The two can disagree — the difference
+is roughly the JavaScript-blocked traffic, which is worth knowing on its own.
+
+Two decisions in `api/go.mjs` that look like details and are not:
+
+- **302, never 301.** A permanent redirect is cached by the browser for as long
+  as it likes, so the second click never reaches the function. The count
+  flatlines and the destination becomes unchangeable for anyone who has clicked
+  before.
+- **`Cache-Control: no-store`.** Same failure through the CDN instead of the
+  browser.
+
+The click log records the slug, the destination, the referer and a timestamp.
+No IP address and no user agent — the question is which link gets clicked, and
+there is no reason for this site to hold more than that. A test asserts their
+absence, so adding one "just for debugging" turns the suite red.
+
 ## Notes on fidelity
 
 Reproduced from the live Squarespace DOM, CSS variables, and section metadata.
@@ -137,10 +182,10 @@ edits reflow sensibly instead of overlapping. Sections stack to one column below
 
 ## Editing
 
-Everything is plain HTML. The header and footer are duplicated across the seven
-pages; that's now the main argument for a static site generator (Eleventy or
-Astro) — seven copies of a nav is about where hand-maintenance starts to cost
-more than the toolchain would.
+Everything is plain HTML. The header and footer are duplicated across every
+page; that's now the main argument for a static site generator (Eleventy or
+Astro) — this many copies of a nav is about where hand-maintenance starts to
+cost more than the toolchain would.
 
 ## Positioning
 
@@ -160,7 +205,7 @@ projects are framed as evidence of the community thread, not as portfolio.
 node --test
 ```
 
-83 tests, no dependencies, about three seconds. The suite uses only `node:test`
+93 tests, no dependencies, about three seconds. The suite uses only `node:test`
 and `node:assert` — installing anything would break the constraint the repo is
 built around, and `tests/repo-constraints.test.mjs` fails if a `package.json`
 with dependencies or a `node_modules` ever appears.
@@ -169,6 +214,7 @@ What it covers, and why each part exists:
 
 | File | Guards |
 | --- | --- |
+| `go-handler.test.mjs` | Every branch of `api/go.mjs` — known and unknown slugs, the 302-not-301 rule, `no-store`, slug parsing, and what the click log may contain |
 | `contact-handler.test.mjs` | Every branch of `api/contact.mjs` — body shapes Vercel can deliver, honeypot, validation, content negotiation, HTML escaping, Resend payload shape |
 | `form-contract.test.mjs` | `assets/js/form.js` run for real in a `node:vm` sandbox, plus **seam tests** proving the bytes the form sends are the bytes the handler parses |
 | `pages.test.mjs` | Link and asset integrity, tag balance, nav/footer consistency, headings, labels, alt text, the skip link |

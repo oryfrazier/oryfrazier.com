@@ -351,3 +351,77 @@ test("no internal link is shadowed by a redirect, and no redirect source has a r
       "this case can no longer prove anything by string equality and needs a real pattern matcher",
   );
 });
+
+/* ------------------------------------------------------------------ *
+ * The two paths pages.test.mjs cannot resolve from disk
+ * ------------------------------------------------------------------ */
+
+/**
+ * pages.test.mjs exempts /_vercel/… and vercel.json rewrite sources from its
+ * "does this resolve on disk" walk, because neither is a file in this repo.
+ * These two cases are what stops that exemption from being a hole: a typo in
+ * the analytics src, or a link at a slug api/go.mjs never defines, would
+ * otherwise ship green and fail only in someone else's browser.
+ */
+
+const ANALYTICS_STUB =
+  '<script>window.va=window.va||function(){(window.vaq=window.vaq||[]).push(arguments);};</script>';
+const ANALYTICS_SRC = '<script defer src="/_vercel/insights/script.js"></script>';
+
+test("every page carries the Vercel Web Analytics snippet, stub first, exactly once", () => {
+  for (const file of pageFiles()) {
+    const html = read(file);
+
+    const stubs = html.split(ANALYTICS_STUB).length - 1;
+    const srcs = html.split(ANALYTICS_SRC).length - 1;
+    assert.equal(stubs, 1, `${file}: expected exactly one analytics queue stub, found ${stubs}`);
+    assert.equal(srcs, 1, `${file}: expected exactly one analytics <script src>, found ${srcs}`);
+
+    // Order matters: va(...) called before the real script loads throws unless
+    // the queue stub is already defined.
+    assert.ok(
+      html.indexOf(ANALYTICS_STUB) < html.indexOf(ANALYTICS_SRC),
+      `${file}: the analytics queue stub must come before the script that consumes it`,
+    );
+  }
+});
+
+test("every /go/<slug> link names a slug api/go.mjs defines, and the rewrite exists", async () => {
+  const { DESTINATIONS } = await import("../api/go.mjs");
+
+  const config = vercelConfig();
+  const rewrites = Array.isArray(config.rewrites) ? config.rewrites : [];
+  const goRewrite = rewrites.find((rule) => String(rule.source).startsWith("/go/"));
+  assert.ok(
+    goRewrite,
+    "vercel.json has no /go/ rewrite — every outbound link on /links would 404",
+  );
+  assert.equal(
+    goRewrite.destination,
+    "/api/go?slug=:slug",
+    `the /go rewrite points at ${goRewrite.destination}, which is not the handler`,
+  );
+  assert.ok(exists("api/go.mjs"), "vercel.json rewrites /go/ onto api/go.mjs, which is not on disk");
+
+  const linked = new Set();
+  for (const file of pageFiles()) {
+    for (const match of read(file).matchAll(/href="\/go\/([^"?#]+)"/g)) {
+      linked.add(match[1]);
+    }
+  }
+  assert.ok(linked.size > 0, "no /go/<slug> links found on any page — the walk is not seeing them");
+
+  const unknown = [...linked].filter((slug) => !Object.hasOwn(DESTINATIONS, slug)).sort();
+  assert.deepEqual(
+    unknown,
+    [],
+    `these slugs are linked but not defined in api/go.mjs, so they redirect to the ` +
+      `fallback instead of the destination: ${unknown.join(", ")}`,
+  );
+
+  // Every destination is an absolute off-site URL. A relative Location would
+  // make the redirect loop back into this site.
+  for (const [slug, url] of Object.entries(DESTINATIONS)) {
+    assert.match(url, /^https:\/\//, `api/go.mjs: ${slug} -> ${url} is not an absolute https URL`);
+  }
+});

@@ -239,10 +239,16 @@ test("the zero-dependency, no-build-step constraint is enforced by something oth
  * see history.
  */
 
-const BUSTED_ASSETS = [
-  { file: "assets/css/style.css", ref: "style.css" },
-  { file: "assets/js/form.js", ref: "form.js" },
-];
+/* Derived from disk, never listed by hand: a third stylesheet or script added
+   later is covered the moment it lands, and a hand-written list is exactly the
+   kind of thing that goes stale while reading as if it still means something. */
+const BUSTED_ASSETS = ["assets/css", "assets/js"]
+  .filter((dir) => exists(dir))
+  .flatMap((dir) =>
+    readdirSync(abs(dir))
+      .filter((name) => /\.(?:css|js)$/.test(name))
+      .map((name) => ({ file: `${dir}/${name}`, ref: name })),
+  );
 
 /** The set of ?v= values used for one asset across every page. */
 function tokensFor(ref) {

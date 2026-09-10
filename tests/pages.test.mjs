@@ -30,9 +30,48 @@ import {
   sliceElement,
   stripQuery,
   tokenize,
+  vercelConfig,
 } from "./helpers/repo.mjs";
 
 const PAGES = pageFiles();
+
+/* Paths the PLATFORM serves, which therefore have no file in this repo: Vercel's
+   own analytics script under /_vercel/, and anything vercel.json rewrites onto a
+   serverless function. A disk walk cannot see either, so both are exempted from
+   the two resolution tests below.
+   
+   An exemption is a hole, so each one is pinned somewhere else rather than
+   trusted: tests/deploy-config.test.mjs asserts the analytics snippet byte-exact
+   on every page, and that every /go/<slug> link names a slug api/go.mjs actually
+   defines. Without those two, a typo in either path would ship green. */
+const PLATFORM_PREFIXES = [/^\/_vercel\//];
+
+/** vercel.json rewrite sources as anchored regexes: "/go/:slug" -> ^/go/[^/]+$ */
+const REWRITE_SOURCES = (() => {
+  const config = vercelConfig();
+  const rewrites = Array.isArray(config.rewrites) ? config.rewrites : [];
+  return rewrites.map((rule) => {
+    const pattern = String(rule.source)
+      .split(/(:[A-Za-z0-9_]+\*?)/)
+      .map((part) =>
+        /^:[A-Za-z0-9_]+\*?$/.test(part)
+          ? part.endsWith("*")
+            ? ".*"
+            : "[^/]+"
+          : part.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"),
+      )
+      .join("");
+    return new RegExp(`^${pattern}$`);
+  });
+})();
+
+/** True for a root-relative path served by the platform rather than from disk. */
+function isPlatformPath(urlPath) {
+  return (
+    PLATFORM_PREFIXES.some((re) => re.test(urlPath)) ||
+    REWRITE_SOURCES.some((re) => re.test(urlPath))
+  );
+}
 
 const tokenCache = new Map();
 /** Memoised token stream for a page file. */
@@ -165,6 +204,7 @@ test("every referenced asset exists on disk", () => {
     const clean = stripQuery(ref);
     if (clean === "" || clean.startsWith("#")) return;
     if (/^[a-z][a-z0-9+.-]*:/i.test(clean) || clean.startsWith("//")) return; // external
+    if (isPlatformPath(clean)) return; // served by Vercel, not from this repo
     const rel = clean.replace(/^\/+/, "");
     if (!exists(rel)) broken.push(`${at(file, index)}: ${what} ${ref} -> ${rel} does not exist`);
   };
@@ -230,6 +270,8 @@ test("internal links resolve under cleanUrls and end in no .html", () => {
         }
 
         const clean = stripQuery(raw);
+        if (isPlatformPath(clean)) continue; // /_vercel/… or a vercel.json rewrite
+
         if (clean.startsWith("/api/")) {
           // Serverless functions are files under api/ with a runtime extension.
           const base = clean.slice("/api/".length);

@@ -94,6 +94,7 @@ h1, h2, h3, h4,
 .race__time,
 .credential__name,
 .details dt,
+.link-card__title,
 .site-footer a {
   font-kerning: none;
 }
@@ -716,6 +717,122 @@ main > .section:first-child {
 .button:focus-visible {
   background: var(--accent-dark);
   transform: translateY(-1px);
+}
+
+/* --- Link hub (/links) ---------------------------------------------------
+   The share-one-URL page: the destination for a bio link, a QR code or a
+   talk slide. Everything is a full-width tap target in one column at every
+   width, because the whole page exists to be used on a phone.
+   ------------------------------------------------------------------------ */
+
+.profile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 0.6rem;
+  margin-bottom: clamp(2rem, 4vw, 3rem);
+}
+
+/* The portrait is a full-body frame, so a plain square crop of it leaves the
+   face too small to recognise at avatar size. The wrapper does the clipping and
+   the image is scaled up inside it: object-position picks the head, the scale
+   factor tightens to head-and-shoulders. Scaling stays sharp because the source
+   is 750px wide and the circle renders at ~150. */
+.profile__avatar {
+  width: clamp(6.5rem, 20vw, 9.5rem);
+  aspect-ratio: 1;
+  overflow: hidden;
+  border-radius: 50%;
+  margin-bottom: 0.4rem;
+}
+
+.profile__portrait {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 47% 33%;
+  transform: scale(2.3);
+}
+
+.profile__blurb {
+  max-width: 32rem;
+  color: var(--ink);
+}
+
+.link-group {
+  margin-bottom: clamp(1.75rem, 3.5vw, 2.75rem);
+}
+
+.link-group h2 {
+  font-size: clamp(0.95rem, 1.25vw, 1.1rem);
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink);
+  margin-bottom: 0.8rem;
+}
+
+.link-list {
+  display: grid;
+  gap: 0.75rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.link-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  padding: clamp(1rem, 2vw, 1.3rem) clamp(1.1rem, 2.2vw, 1.6rem);
+  border-radius: 1.1rem;
+  background: var(--white);
+  color: var(--text);
+  text-decoration: none;
+  /* An inset ring rather than a border: it costs no layout box, so the card
+     can thicken it on hover without the whole stack shifting by a pixel. */
+  box-shadow: inset 0 0 0 2px rgba(94, 93, 216, 0.25);
+  transition: box-shadow 0.2s ease, transform 0.2s ease, background-color 0.2s ease;
+}
+
+.link-card:hover,
+.link-card:focus-visible {
+  box-shadow: inset 0 0 0 2px var(--accent);
+  transform: translateY(-1px);
+}
+
+.link-card__title {
+  font-family: var(--font-heading);
+  font-size: clamp(1.05rem, 1.6vw, 1.25rem);
+  font-weight: 600;
+  line-height: 1.25;
+  color: var(--accent-dark);
+}
+
+.link-card__note {
+  font-size: clamp(0.9rem, 1.15vw, 1rem);
+  line-height: 1.45;
+  color: var(--ink);
+}
+
+/* The one card that is the point of the page. Declared after the base so it
+   wins at equal specificity; the hover pair below it for the same reason
+   against `.link-card:hover`, which is (0,2,0). */
+.link-card--primary {
+  background: var(--accent);
+  box-shadow: none;
+}
+
+.link-card--primary .link-card__title,
+.link-card--primary .link-card__note {
+  color: var(--white);
+}
+
+.link-card--primary:hover,
+.link-card--primary:focus-visible {
+  background: var(--accent-dark);
+  box-shadow: none;
 }
 
 /* --- Forms --------------------------------------------------------------- */
