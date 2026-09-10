@@ -1,0 +1,39 @@
+#!/bin/sh
+# Run the test suite before a push is allowed to leave the machine.
+#
+# Why this exists: Vercel deploys straight from the push and does not wait for
+# GitHub Actions. CI tells you a commit is broken a few seconds AFTER the broken
+# version is already live. This is the last point where stopping is still cheap.
+#
+# Enable (once per clone):   git config core.hooksPath .githooks
+# Bypass when you must:      git push --no-verify
+
+if ! command -v node >/dev/null 2>&1; then
+  echo "pre-push: node not found — skipping tests" >&2
+  exit 0
+fi
+
+echo "pre-push: running the test suite…"
+
+if node --test >/tmp/oryfrazier-pre-push.log 2>&1; then
+  # The default reporter emits a line like "\u2139 pass 83"; fall back to a bare
+  # message if that ever changes rather than printing something misleading.
+  passed=$(sed -n 's/^.* pass \([0-9][0-9]*\)$/\1/p' /tmp/oryfrazier-pre-push.log | head -1)
+  if [ -n "$passed" ]; then
+    echo "pre-push: $passed tests passed"
+  else
+    echo "pre-push: tests passed"
+  fi
+  exit 0
+fi
+
+echo >&2
+echo "pre-push: TESTS FAILED — push aborted." >&2
+echo >&2
+sed -n '/^✖ failing tests:/,$p' /tmp/oryfrazier-pre-push.log >&2 2>/dev/null \
+  || tail -40 /tmp/oryfrazier-pre-push.log >&2
+echo >&2
+echo "Full output: /tmp/oryfrazier-pre-push.log" >&2
+echo "Re-run with: node --test" >&2
+echo "Push anyway: git push --no-verify" >&2
+exit 1

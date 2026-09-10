@@ -180,9 +180,27 @@ Every test in here exists because something actually broke during the build.
 The suite was mutation-tested: each of the six bugs that shipped was
 re-introduced, and each one turns the suite red.
 
-CI runs it on every push via `.github/workflows/test.yml`. Note the
-`fetch-depth: 0` — the cache-bust currency check queries git history and skips
-on a shallow clone.
+### When it runs
+
+| Trigger | Where results live |
+| --- | --- |
+| `node --test` | Your terminal |
+| `git push` | Blocked locally by `.githooks/pre-push` if anything is red |
+| Push to `main`, or any PR | GitHub Actions tab, ~10s |
+
+**Enable the hook once per clone:**
+
+```sh
+git config core.hooksPath .githooks
+```
+
+That matters because **Vercel deploys straight from the push and does not wait
+for CI**. GitHub Actions tells you a commit is broken a few seconds after the
+broken version is already live. The pre-push hook is the last point where
+stopping is still cheap. `git push --no-verify` bypasses it when you need to.
+
+CI config is `.github/workflows/test.yml`. Note the `fetch-depth: 0` — the
+cache-bust currency check queries git history and skips on a shallow clone.
 
 ## Changing CSS or JS
 
