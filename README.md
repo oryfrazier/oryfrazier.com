@@ -191,6 +191,48 @@ No IP address and no user agent — the question is which link gets clicked, and
 there is no reason for this site to hold more than that. A test asserts their
 absence, so adding one "just for debugging" turns the suite red.
 
+## Being found by AI search
+
+Two things matter and both are cheap.
+
+**`robots.txt` names the AI crawlers explicitly.** The wildcard already allowed
+them, but the file now separates the two kinds so the distinction is visible and
+easy to change:
+
+- **Search / citation** — `OAI-SearchBot`, `ChatGPT-User`, `Claude-SearchBot`,
+  `Claude-User`, `PerplexityBot`. Allowing these is what makes the site eligible
+  to be cited in an AI answer.
+- **Training** — `GPTBot`, `ClaudeBot`, `Google-Extended`. Separate agents.
+  Blocking them would not affect citation eligibility.
+
+Both are allowed. Blocking training is a one-line change per group if that view
+ever shifts.
+
+**Every indexable page carries JSON-LD**, sharing one `Person` node at
+`https://www.oryfrazier.com/#person` so the graph joins up across pages:
+
+| Page | Types |
+| --- | --- |
+| `/` | WebSite, Person |
+| `/about` | Person with `hasCredential` (the CAP) |
+| `/coaching` | Service with an Offer carrying the real price |
+| `/projects` | PodcastSeries (Hard Days), Person |
+| `/links` | ProfilePage, Person |
+| `/contact` | ContactPage, Person |
+
+`404` and `thanks` are `noindex` and deliberately carry none.
+
+A test asserts the markup parses, that the `Person` `@id` is identical
+everywhere, and that **any price in the markup also appears on the page** —
+structured data that contradicts the visible copy is an SEO penalty and, more
+importantly, untrue.
+
+One honest caveat: the structured-data industry claims JSON-LD is mandatory for
+AI search. Google states no special markup is required for its AI features. The
+defensible version is narrower — it makes entity extraction unambiguous rather
+than inferred, it costs nothing, and it cannot hurt. It is not what makes a site
+get cited; links and traffic are.
+
 ## Notes on fidelity
 
 Reproduced from the live Squarespace DOM, CSS variables, and section metadata.

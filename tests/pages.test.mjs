@@ -517,6 +517,57 @@ test("no page ships an unresolved TODO or placeholder marker", () => {
   assert.deepStrictEqual(offenders, [], `unresolved placeholders shipped:\n  ${offenders.join("\n  ")}`);
 });
 
+
+test("structured data parses, and its claims match what the page actually says", () => {
+  // JSON-LD that contradicts the visible page is both an SEO penalty and, more
+  // to the point, untrue. These assertions tie the markup to the copy.
+  const NOINDEX = new Set(["404.html", "thanks.html"]);
+  const problems = [];
+
+  for (const page of PAGES) {
+    const html = pageHtml(page);
+    const block = html.match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/);
+
+    if (NOINDEX.has(page)) {
+      if (block) problems.push(`${page}: noindex page should not carry structured data`);
+      continue;
+    }
+    if (!block) { problems.push(`${page}: indexable page has no JSON-LD`); continue; }
+
+    let data;
+    try {
+      data = JSON.parse(block[1]);
+    } catch (error) {
+      problems.push(`${page}: JSON-LD does not parse — ${error.message}`);
+      continue;
+    }
+
+    const nodes = data["@graph"] || [data];
+    const person = nodes.find((n) => n["@type"] === "Person");
+    if (!person) problems.push(`${page}: no Person node`);
+    // One @id for the person across every page, or the graph does not join up.
+    else if (person["@id"] !== "https://www.oryfrazier.com/#person") {
+      problems.push(`${page}: Person @id is ${person["@id"]}`);
+    }
+
+    // The advertised price must be the price on the page.
+    const offer = nodes.flatMap((n) => (n.offers ? [n.offers] : []))[0];
+    if (offer) {
+      const priceInMarkup = String(offer.price);
+      if (!html.includes(`$${priceInMarkup}`)) {
+        problems.push(`${page}: markup offers $${priceInMarkup} but that figure is not on the page`);
+      }
+    }
+
+    // Every sameAs / url must be a link the page or site actually uses.
+    for (const url of person?.sameAs || []) {
+      if (!/^https:\/\//.test(url)) problems.push(`${page}: sameAs not https — ${url}`);
+    }
+  }
+
+  assert.deepStrictEqual(problems, [], `structured data problems:\n  ${problems.join("\n  ")}`);
+});
+
 test("every img has an alt attribute", () => {
   let total = 0;
   for (const file of PAGES) {

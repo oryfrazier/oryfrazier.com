@@ -1,4 +1,38 @@
+# Everything is allowed, including AI crawlers. The wildcard below already
+# covers them; the named groups exist so the intent is explicit and so the
+# training/search distinction is easy to change later if that view shifts.
+
 User-agent: *
+Allow: /
+
+# --- AI search and answer engines (citation) ---
+# These fetch pages to answer live user questions. Allowing them is what makes
+# the site eligible to be cited in an AI answer.
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: Claude-SearchBot
+Allow: /
+
+User-agent: Claude-User
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+# --- AI model training ---
+# Separate agents from the ones above. Blocking these would not affect
+# citation eligibility, if that ever becomes the preference.
+User-agent: GPTBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Google-Extended
 Allow: /
 
 Sitemap: https://www.oryfrazier.com/sitemap.xml
