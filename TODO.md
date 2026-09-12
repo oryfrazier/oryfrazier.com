@@ -61,9 +61,10 @@ question. Don't add them without permission.
       clicks server-side and works with JavaScript off. See **Measurement** in
       README.md.
 
-      **Still needs one manual step:** switch on Web Analytics in the Vercel
-      dashboard (Project → Analytics → Enable). Until then the script 404s and
-      only the `/go/` half is recording anything.
+      **Enabled and collecting, confirmed 2026-09-11.** First data in the
+      dashboard: 7 visitors / 9 page views over 7 days, `/links` the top page
+      (5 of 7 visitors), referrer facebook.com (4). The script serves 200 from
+      `/_vercel/insights/script.js` on every page.
 
 - [ ] **Never rename a `/go/` slug.** Instagram's bio links point at
       `/go/medaling-with-friends` and `/go/ice-cycles` directly, so a rename
