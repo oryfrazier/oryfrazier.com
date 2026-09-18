@@ -12,6 +12,7 @@ Open items live in [TODO.md](TODO.md).
 ├── index.html            Home  (hero, stats, offer, contact form)
 ├── coaching.html         Coaching — the two tracks and how it works
 ├── about.html            About  (bio, credential, race record)
+├── podcast.html          Hard Days — the one link to send people to
 ├── projects.html         Projects — Medaling with Friends, IceCycles
 ├── contact.html          Contact (form + photo)
 ├── links.html            Link hub — the one URL for a bio link or QR code
@@ -25,7 +26,7 @@ Open items live in [TODO.md](TODO.md).
 └── assets/
     ├── css/style.css     All styles. Design tokens live at the top.
     ├── js/form.js        Progressive-enhancement form submit
-    ├── js/links.js       Outbound clicks as Analytics events (/links only)
+    ├── js/links.js       Outbound clicks as Analytics events (/links and /podcast)
     ├── fonts/            Self-hosted Fredoka + Nunito (SIL OFL)
     └── img/              Photos at 750 / 1500 / 2500px (WebP)
 ```
@@ -142,6 +143,38 @@ The Linktree itself was cut down to a single button pointing here rather than
 deleted, because old QR codes and forgotten bio links still resolve to it.
 Delete it once those have aged out.
 
+## The /podcast page
+
+One URL to hand someone who asks about the show: `oryfrazier.com/podcast`. It
+exists because there was no such thing — the only links that existed were one
+per app, so every mention of *Hard Days* anywhere on the site sent Spotify
+listeners to Apple Podcasts and hoped.
+
+What the page owns that a smart-link service (pod.link and friends) would not:
+
+- **the domain.** A podcast link shared in a text, a race chat or a bio stays
+  on a host we control, and keeps working if a third party folds;
+- **the copy.** Someone who has never heard the show gets a paragraph about
+  what it is before being asked to pick an app;
+- **the measurement.** Both app links go through `/go/<slug>`, so a tap is
+  counted here (see below) rather than in someone else's dashboard.
+
+`/podcast` is in the nav and in `sitemap.xml`, unlike `/links`, because it is a
+destination a front-door visitor should be able to find.
+
+**Every other mention of the podcast on this site now points at `/podcast`**,
+not at Apple — the home, about and coaching prose links and the Projects card.
+`/links` is the one exception: it keeps a card per app, because a bio-link tap
+should reach audio in one tap, not two. The `PodcastSeries` JSON-LD on
+`/projects` carries the same `@id` as the one on `/podcast`, so the two
+describe one show rather than two.
+
+Not on the page yet, and the next thing worth adding: **a "start here" trio of
+real episodes**, and **transcripts**. Podcast search is text-blind — an episode
+page with a transcript is the only version of this show a crawler or an LLM can
+read. Neither belongs in this repo as hand-written HTML; both wait on the
+`harddays` pipeline producing them.
+
 ## Measurement
 
 Two independent things, because they answer different questions and fail in
@@ -158,7 +191,7 @@ snippet and that ordering on every page.
 Enable Web Analytics). Until it is, the script 404s and nothing is recorded.
 Custom events need the Pro plan, which this project is already on.
 
-**Outbound clicks — `/go/<slug>`.** Every off-site link on `/links` points at
+**Outbound clicks — `/go/<slug>`.** Every off-site link on `/links` and `/podcast` points at
 `/go/<slug>`; `vercel.json` rewrites that onto `api/go.mjs`, which logs one JSON
 line and 302s to the destination. Adding an outbound link means adding a slug to
 `DESTINATIONS` in that file first — a page that links at an undefined slug fails
@@ -216,7 +249,8 @@ ever shifts.
 | `/` | WebSite, Person |
 | `/about` | Person with `hasCredential` (the CAP) |
 | `/coaching` | Service with an Offer carrying the real price |
-| `/projects` | PodcastSeries (Hard Days), Person |
+| `/podcast` | PodcastSeries (Hard Days), Person |
+| `/projects` | PodcastSeries (Hard Days, same `@id` as `/podcast`), Person |
 | `/links` | ProfilePage, Person |
 | `/contact` | ContactPage, Person |
 

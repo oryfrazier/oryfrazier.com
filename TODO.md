@@ -8,6 +8,30 @@ Porkbun. Nothing below is blocking — it's what's left.
 
 Nothing. Checked the Squarespace account on 2026-09-04 — see below.
 
+## Podcast page — shipped
+
+- [x] **`/podcast` exists** (2026-09-17). One URL for *Hard Days* instead of one
+      link per app. In the nav and the sitemap; both app links go through
+      `/go/apple-podcasts` and `/go/spotify` so taps are counted. Every other
+      podcast mention on the site (home, about, coaching prose, the Projects
+      card) now points at it, and the `PodcastSeries` JSON-LD on `/projects`
+      shares its `@id`. Rationale in README, "The /podcast page".
+
+- [ ] **Add a "start here" trio of real episodes.** The page currently sells the
+      show without naming a single episode, which is the weakest thing about it.
+      Needs three episode titles and Apple/Spotify episode URLs from you — I
+      won't invent them.
+
+- [ ] **Transcripts are the real unlock.** Podcast search is text-blind: a
+      crawler or an LLM can read a transcript page and cannot read audio. An
+      archive of episode transcripts on this domain is a content position no
+      other coach in this niche has. This waits on the `harddays` pipeline
+      producing transcript text — not on hand-written HTML here.
+
+- [ ] **Ask Google to index `/podcast`.** Discovery via `sitemap.xml` did the
+      job unaided for `/coaching` and `/projects`, so this is a check, not a
+      task: URL Inspection in a few days.
+
 ## Coaching page — shipped
 
 - [x] **Practical details filled in** (2026-09-10): 60-minute sessions by video,
