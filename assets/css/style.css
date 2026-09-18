@@ -92,6 +92,8 @@ h1, h2, h3, h4,
 .project__meta,
 .race__name,
 .race__time,
+.episode__title,
+.episode__length,
 .credential__name,
 .details dt,
 .link-card__title,
@@ -514,14 +516,19 @@ main > .section:first-child {
 
 /* --- Race list ------------------------------------------------------------ */
 
-.races {
+/* Two lists with one shape: a name, a line of detail under it, and a figure
+   held out to the right (a finish time on /about, a running time on /podcast).
+   Shared declarations, separate names — the episode list is not a race. */
+.races,
+.episodes {
   margin: 0;
   padding: 0;
   list-style: none;
   border-top: 1px solid rgba(79, 79, 79, 0.2);
 }
 
-.race {
+.race,
+.episode {
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
   gap: 0.2rem clamp(1rem, 3vw, 3rem);
@@ -529,7 +536,8 @@ main > .section:first-child {
   border-bottom: 1px solid rgba(79, 79, 79, 0.2);
 }
 
-.race__name {
+.race__name,
+.episode__title {
   grid-column: 1;
   font-family: var(--font-heading);
   font-size: clamp(1rem, 1.4vw, 1.3rem);
@@ -539,14 +547,16 @@ main > .section:first-child {
   color: var(--ink);
 }
 
-.race__meta {
+.race__meta,
+.episode__note {
   grid-column: 1;
   font-size: clamp(0.85rem, 1.1vw, 1.05rem);
   color: var(--ink);
   opacity: 0.85;
 }
 
-.race__time {
+.race__time,
+.episode__length {
   grid-column: 2;
   grid-row: 1 / span 2;
   align-self: center;
@@ -1045,7 +1055,8 @@ main > .section:first-child {
     grid-template-columns: minmax(0, 1fr);
   }
 
-  .race {
+  .race,
+  .episode {
     grid-template-columns: minmax(0, 1fr);
   }
 
@@ -1058,7 +1069,8 @@ main > .section:first-child {
     max-width: 60vw;
   }
 
-  .race__time {
+  .race__time,
+  .episode__length {
     grid-column: 1;
     grid-row: auto;
   }
